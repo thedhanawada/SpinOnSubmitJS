@@ -1,0 +1,19 @@
+{
+  "name": "spinonsubmitjs",
+  "version": "1.0.0",
+  "description": "SpinOnSubmitJS is a compact JavaScript library that enhances your form submit buttons with a visual loading spinner, providing immediate and intuitive feedback to users upon submission",
+  "main": "spinonsubmit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thedhanawada/SpinOnSubmitJS.git"
+  },
+  "author": "Nirmala Rao Dhanawada",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thedhanawada/SpinOnSubmitJS/issues"
+  },
+  "homepage": "https://github.com/thedhanawada/SpinOnSubmitJS#readme"
+}
