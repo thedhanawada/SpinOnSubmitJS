@@ -20,7 +20,7 @@ To use SpinOnSubmitJS in your project, include the JavaScript file in your HTML:
 
 Once you've included SpinOnSubmitJS in your project, you can use it as follows:
 
-```html
+```javascript
 window.onload = function() {
   SpinOnSubmitJS.createSpinnerButton('submitBtn', 'myForm', function(data) {
     // Add your asynchronous action here
