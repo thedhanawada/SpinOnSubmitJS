@@ -1,0 +1,32 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spinner Button Test</title>
+  <script type="module">
+    import { createSpinnerButton } from './spinonsubmit.js';
+
+    window.onload = function() {
+      createSpinnerButton('myForm', function() {
+        // Simulate an asynchronous action (e.g., form submission)
+        return new Promise(function(resolve) {
+          setTimeout(function() {
+            var firstName = document.getElementById("firstName").value;
+            var lastName = document.getElementById("lastName").value;
+            alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
+            resolve();
+          }, 5000);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <form id="myForm">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" required><br><br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" required><br><br>
+  </form>
+</body>
+</html>
