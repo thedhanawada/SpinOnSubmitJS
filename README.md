@@ -1,48 +1,66 @@
-# SpinOnSubmitJS
+# SpinOnSubmitJSSpinOnSubmitJS
 
-SpinOnSubmitJS is a lightweight JavaScript library that adds a loading spinner to your submit buttons, providing immediate feedback to your users when they submit a form.
+SpinOnSubmitJS is a lightweight JavaScript library that provides an easy way to add a spinner to a submit button when performing asynchronous actions, such as form submissions. It simplifies the process of indicating loading state and disabling the button while waiting for the action to complete.
+Installation
 
-## Installation
+You can install SpinOnSubmitJS via npm:
 
-To install SpinOnSubmitJS, simply include the `spinOnSubmit.js` file in your project:
-
-```html
-<script src="path/to/spinOnSubmit.js"></script>
-```
-
-You can also use npm:
-
-```bash
+```shell
 npm install spinonsubmitjs
 ```
+
 ## Usage
 
-To use SpinOnSubmitJS, you need to call the createSpinnerButton function and pass in the ID of your form button, the ID of your form, and a function that handles form submission.
+To use SpinOnSubmitJS in your project, follow these steps:
 
-```javascript
-createSpinnerButton('buttonId', 'formId', onSubmit);
+- Include the library in your project:
+
+```html
+
+<script src="path/to/spinonsubmit.js"></script>
 ```
 
-Here's an example:
+- Create a submit button element in your HTML form with an id attribute:
+
+```html
+<button id="submitBtn">Submit</button>
+```
+
+- Initialize SpinOnSubmitJS by calling the createSpinnerButton function:
 
 ```javascript
-window.onload = function() {
-  createSpinnerButton('submitBtn', 'myForm', function(data) {
-    // Handle form submission
-    // Return a promise that resolves when the submission is done
+createSpinnerButton('submitBtn', 'myForm', onSubmit);
+```
+1.    The first argument is the id of the submit button.
+2.    The second argument is the id of the form element.
+3.    The third argument is a callback function that represents the asynchronous action to be performed when the button is clicked. This function should return a promise.
+
+## Example:
+
+```javascript
+function onSubmit() {
+  return new Promise(function(resolve) {
+    // Perform your asynchronous action here
+    // Call resolve() when the action is complete
   });
 }
 ```
 
-This will automatically add a loading spinner to your submit button when the form is submitted. The spinner will disappear when the form submission is complete.
+## Customize the spinner styles (optional):
 
-## API
+You can customize the spinner styles by passing an optional spinnerStyles object as the fourth argument to createSpinnerButton. This object should contain CSS styles that will be applied to the spinner element.
+
+### Example:
+
 ```javascript
-createSpinnerButton(buttonId, formId, onSubmit)
+
+    const spinnerStyles = {
+      width: '24px',
+      height: '24px',
+      // Add any other custom styles here
+    };
+
+    createSpinnerButton('submitBtn', 'myForm', onSubmit, spinnerStyles);
 ```
 
-- buttonId: The ID of the submit button to which the spinner should be added.
-- formId: The ID of the form that should be handled.
-- onSubmit: A function that takes the form data as an argument and handles form     submission. This function should return a promise that resolves when the form     submission is complete.
-
-If you encounter any issues, please open an issue on the GitHub repository.
+You are good to go. Now, when the submit button is clicked, the spinner will be displayed, and the button will be disabled until the asynchronous action is complete.

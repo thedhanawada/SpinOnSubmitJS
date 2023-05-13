@@ -1,5 +1,5 @@
 // spinnerButton.js
-export function createSpinnerButton(formId, onSubmit) {
+export function createSpinnerButton(buttonId, formId, onSubmit, spinnerStyles) {
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
@@ -10,11 +10,7 @@ export function createSpinnerButton(formId, onSubmit) {
       height: 20px;
       animation: spin 1s linear infinite;
       margin-right: 5px;
-      display: none; /* Hide the spinner initially */
-    }
-
-    .buttonDisabled {
-      pointer-events: none;
+      display: none;
     }
 
     @keyframes spin {
@@ -25,40 +21,34 @@ export function createSpinnerButton(formId, onSubmit) {
   document.head.appendChild(style);
 
   const spinner = document.createElement('span');
-  spinner.id = "spinner";
   spinner.className = "loader";
+  
+  const button = document.getElementById(buttonId);
+  const buttonText = button.innerHTML;
+  
+  button.innerHTML = "";
 
-  const submitText = document.createElement('span');
-  submitText.id = "submitText";
-  submitText.textContent = "Submit";
+  const buttonLabel = document.createElement('span');
+  buttonLabel.textContent = buttonText;
+  buttonLabel.style.display = "inline";
+  button.appendChild(spinner);
+  button.appendChild(buttonLabel);
+  
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    const form = document.getElementById(formId);
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
 
-  const submitBtn = document.createElement('button');
-  submitBtn.id = "submitBtn";
-  submitBtn.appendChild(spinner);
-  submitBtn.appendChild(submitText);
-  submitBtn.onclick = function() {
-    showLoadingSpinner(onSubmit);
-    return false; // Prevent form submission
-  };
+    spinner.style.display = "inline-block";
+    button.disabled = true;
+    buttonLabel.style.display = "none";
 
-  const form = document.getElementById(formId);
-  form.appendChild(submitBtn);
-}
-
-function showLoadingSpinner(onSubmit) {
-  var spinner = document.getElementById("spinner");
-  var submitBtn = document.getElementById("submitBtn");
-  var submitText = document.getElementById("submitText");
-
-  spinner.style.display = "inline-block"; /* Show the spinner */
-  submitText.style.display = "none"; /* Hide the "Submit" text */
-  submitBtn.classList.add("buttonDisabled");
-
-  // Simulate an asynchronous action (e.g., form submission)
-  onSubmit().finally(() => {
-    // Hide the spinner and enable the submit button after a delay (5 seconds in this example)
-    spinner.style.display = "none";
-    submitText.style.display = "inline"; /* Show the "Submit" text */
-    submitBtn.classList.remove("buttonDisabled");
+    onSubmit(data).finally(() => {
+      spinner.style.display = "none";
+      button.disabled = false;
+      buttonLabel.style.display = "inline";
+    });
   });
 }
