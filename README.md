@@ -1,4 +1,4 @@
-[![npm version]([https://img.shields.io/npm/v/livevalidatejs](https://img.shields.io/npm/v/spinonsubmitjs?style=plastic))]([https://img.shields.io/npm/v/livevalidatejs](https://img.shields.io/npm/v/spinonsubmitjs?style=plastic))
+[![npm version](https://img.shields.io/npm/v/spinonsubmitjs)](https://img.shields.io/npm/v/spinonsubmitjs)
 
 # SpinOnSubmitJS
 
