@@ -2,69 +2,7 @@
 <html>
 <head>
   <title>SpinOnSubmitJS Example</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-
-    h1 {
-      color: #333;
-      text-align: center;
-    }
-
-    form {
-      max-width: 300px;
-      margin: 0 auto;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-    }
-
-    button {
-      display: inline-block;
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #2980b9;
-    }
-
-    .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 1s linear infinite;
-      margin-right: 5px;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="./main.css">
   <script type="module">
     import { createSpinnerButton } from './spinonsubmit.js';
 
@@ -84,7 +22,55 @@
   </script>
 </head>
 <body>
-  <h1>SpinOnSubmitJS Example</h1>
+  
+  <h1>SpinOnSubmitJS</h1>
+
+  <h2>About the Library</h2>
+  <p>
+    SpinOnSubmitJS is a lightweight JavaScript library that simplifies the process of indicating loading state and disabling a submit button during asynchronous actions, such as form submissions. It provides an easy way to add a spinner to the submit button, improving user experience and preventing multiple form submissions. This library is perfect for web developers looking to improve the interactivity of their web pages without writing complex JavaScript code.
+  </p>
+
+  <h2>Installation</h2>
+  <p>
+    SpinOnSubmitJS can be installed via NPM. To add it to your project, simply open your terminal and run the following command:
+  </p>
+  <pre><code>npm install spinonsubmitjs</code></pre>
+
+  <h2>Usage</h2>
+  <p>
+    Using SpinOnSubmitJS in your project is quite straightforward. Follow these steps:
+  </p>
+
+  <ol>
+    <li>Create a submit button element in your HTML form with a unique ID.</li>
+    <li>In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS library.</li>
+    <li>Call `createSpinnerButton`, passing in the ID of your submit button, the ID of your form, and a callback function that represents the asynchronous action to be performed when the button is clicked.</li>
+    <li>Optionally, you can also pass a fourth argument to `createSpinnerButton` to customize the spinner's styles. This should be an object where the keys are CSS property names and the values are the desired styles.</li>
+  </ol>
+
+  <p>Here's an example:</p>
+
+  <pre><code>
+    import { createSpinnerButton } from 'spinonsubmitjs';
+
+    createSpinnerButton('submitBtn', 'myForm', function() {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          var firstName = document.getElementById("firstName").value;
+          var lastName = document.getElementById("lastName").value;
+          alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
+          resolve();
+        }, 2000);
+      });
+    });
+  </code></pre>
+
+  <h2>Example</h2>
+  <p>
+    Below is a live example of a form using SpinOnSubmitJS. When you click the submit button, the form data is gathered and an alert is displayed with your first and last name. During this time, the submit button is disabled and a spinner is displayed.
+  </p>
+
+
   <form id="myForm">
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" required><br><br>
@@ -92,5 +78,18 @@
     <input type="text" id="lastName" required><br><br>
     <button id="submitBtn">Submit</button>
   </form>
+
+  <h2>GitHub Repository</h2>
+  <p>
+    The source code for SpinOnSubmitJS is available on GitHub. You can view it, download it, fork it, or contribute to it by visiting the following link: 
+    <a href="https://github.com/thedhanawada/SpinOnSubmitJS" target="_blank">SpinOnSubmitJS GitHub Repository</a>.
+  </p>
+
+  <h2>NPM Package</h2>
+  <p>
+    SpinOnSubmitJS is also available as an NPM package. You can add it to your project by running `npm install spinonsubmitjs` or visit the NPM package page at 
+    <a href="https://www.npmjs.com/package/spinonsubmitjs" target="_blank">SpinOnSubmitJS NPM Package</a> for more information.
+  </p>
+
 </body>
 </html>
