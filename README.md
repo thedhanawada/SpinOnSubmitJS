@@ -1,3 +1,5 @@
+[![npm version]([https://img.shields.io/npm/v/livevalidatejs](https://img.shields.io/npm/v/spinonsubmitjs?style=plastic))]([https://img.shields.io/npm/v/livevalidatejs](https://img.shields.io/npm/v/spinonsubmitjs?style=plastic))
+
 # SpinOnSubmitJS
 
 SpinOnSubmitJS is a lightweight JavaScript library that provides an easy way to add a spinner to a submit button when performing asynchronous actions, such as form submissions. It simplifies the process of indicating loading state and disabling the button while waiting for the action to complete.
