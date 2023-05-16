@@ -1,5 +1,5 @@
 // spinnerButton.js
-export function createSpinnerButton(buttonId, formId, onSubmit, spinnerStyles) {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerStyles = {}) {
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
@@ -45,10 +45,28 @@ export function createSpinnerButton(buttonId, formId, onSubmit, spinnerStyles) {
     button.disabled = true;
     buttonLabel.style.display = "none";
 
-    onSubmit(data).finally(() => {
-      spinner.style.display = "none";
-      button.disabled = false;
-      buttonLabel.style.display = "inline";
-    });
+    onSubmit(data)
+      .then(() => {
+        spinner.style.display = "none";
+        button.disabled = false;
+        buttonLabel.style.display = "inline";
+      })
+      .catch((error) => {
+        spinner.style.display = "none";
+        button.disabled = false;
+        buttonLabel.style.display = "inline";
+        if (onError) {
+          onError(error);
+        }
+      });
   });
+}
+
+export function destroySpinnerButton(buttonId) {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
+
+  while (button.firstChild) {
+    button.removeChild(button.firstChild);
+  }
 }
