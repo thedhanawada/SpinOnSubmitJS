@@ -16,42 +16,83 @@ You can install SpinOnSubmitJS via npm:
 npm install spinonsubmitjs
 ```
 
-## Usage
+## Usage and Examples
+## Usage and Examples
 
-To use SpinOnSubmitJS in your project, follow these steps:
+Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
 
-- Include the library in your project:
+- Create a submit button element in your HTML form with a unique ID.
+- In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS library.
+- Call `createSpinnerButton`, passing in the ID of your submit button, the ID of your form, and a callback function that represents the asynchronous action to be performed when the button is clicked. The callback now also receives the form data as its first argument, so you no longer need to manually gather the data.
+- You can also pass an error callback as a fourth argument. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.
+- Optionally, you can also pass a fifth argument to `createSpinnerButton` to customize the spinner's styles. This should be an object where the keys are CSS property names and the values are the desired styles.
 
-```html
+#### Example 1: Basic Usage
 
-<script src="path/to/spinonsubmit.js"></script>
-```
+### Example 1: Basic Usage
 
-- Create a submit button element in your HTML form with an id attribute:
+    
+        import { createSpinnerButton } from 'spinonsubmitjs';
+    
+        createSpinnerButton('submitBtn1', 'myForm1', (data) => {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+              resolve();
+            }, 2000);
+          });
+        });
+      
 
-```html
-<button id="submitBtn">Submit</button>
-```
+### Example 2: With Error Handling
 
-- Initialize SpinOnSubmitJS by calling the createSpinnerButton function:
+    
+        import { createSpinnerButton } from 'spinonsubmitjs';
+    
+        createSpinnerButton(
+          'submitBtn2', 
+          'myForm2', 
+          (data) => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                if (data.firstName === '') {
+                  reject('First name is required!');
+                } else {
+                  alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+                  resolve();
+                }
+              }, 2000);
+            });
+          }, 
+          (error) => {
+            alert(`Error: ${error}`);
+          }
+        );
+      
 
-```javascript
-createSpinnerButton('submitBtn', 'myForm', onSubmit);
-```
-1.    The first argument is the id of the submit button.
-2.    The second argument is the id of the form element.
-3.    The third argument is a callback function that represents the asynchronous action to be performed when the button is clicked. This function should return a promise.
+### Example 3: With Custom Styles
 
-## Example:
-
-```javascript
-function onSubmit() {
-  return new Promise(function(resolve) {
-    // Perform your asynchronous action here
-    // Call resolve() when the action is complete
-  });
-}
-```
+    
+        import { createSpinnerButton } from 'spinonsubmitjs';
+    
+        createSpinnerButton(
+          'submitBtn3', 
+          'myForm3', 
+          (data) => {
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+                resolve();
+              }, 2000);
+            });
+          },
+          null,
+          {
+            backgroundColor: 'green',
+            borderRadius: '50%',
+            color: 'white'
+          }
+        );
 
 ## Customize the spinner styles (optional):
 
