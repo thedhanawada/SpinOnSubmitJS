@@ -14,8 +14,8 @@ window.onload = function() {
   `;
 
   createSpinnerButton(
-'submitBtn', 
-'myForm', 
+'submitBtn',
+'myForm',
 function(data) {
 return new Promise(function(resolve, reject) {
   setTimeout(function() {
@@ -29,7 +29,7 @@ return new Promise(function(resolve, reject) {
     }
   }, 5000);
 });
-}, 
+},
 function(error) {
 alert(error);
 },
@@ -44,7 +44,7 @@ alert(error);
   </script>
 </head>
 <body>
-  
+
   <h1>SpinOnSubmitJS</h1>
 
   <h2>About the Library</h2>
@@ -93,8 +93,8 @@ alert(error);
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
-      'submitBtn2', 
-      'myForm2', 
+      'submitBtn2',
+      'myForm2',
       (data) => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
@@ -106,7 +106,7 @@ alert(error);
             }
           }, 2000);
         });
-      }, 
+      },
       (error) => {
         alert(`Error: ${error}`);
       }
@@ -119,8 +119,8 @@ alert(error);
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
-      'submitBtn3', 
-      'myForm3', 
+      'submitBtn3',
+      'myForm3',
       (data) => {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -140,14 +140,14 @@ alert(error);
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
-      'submitBtn4', 
-      'myForm4', 
+      'submitBtn4',
+      'myForm4',
       (data) => {
         return new Promise((resolve) => {
           setTimeout(() => {
             alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
             resolve();
-         
+
           }, 2000);
         });
       },
@@ -175,15 +175,15 @@ alert(error);
 
   <h2>GitHub Repository</h2>
   <p>
-    The source code for SpinOnSubmitJS is available on GitHub. You can view it, download it, fork it, or contribute to it by visiting the following link: 
+    The source code for SpinOnSubmitJS is available on GitHub. You can view it, download it, fork it, or contribute to it by visiting the following link:
     <a href="https://github.com/thedhanawada/SpinOnSubmitJS" target="_blank">SpinOnSubmitJS GitHub Repository</a>.
   </p>
 
   <h2>NPM Package</h2>
   <p>
-    SpinOnSubmitJS is also available as an NPM package. You can add it to your project by running `npm install spinonsubmitjs` or visit the NPM package page at 
+    SpinOnSubmitJS is also available as an NPM package. You can add it to your project by running `npm install spinonsubmitjs` or visit the NPM package page at
     <a href="https://www.npmjs.com/package/spinonsubmitjs" target="_blank">SpinOnSubmitJS NPM Package</a> for more information.
   </p>
-  
+
 </body>
 </html>
