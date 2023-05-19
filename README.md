@@ -3,8 +3,6 @@
 [![npm version](https://img.shields.io/bundlephobia/min/spinonsubmitjs)](https://img.shields.io/bundlephobia/min/spinonsubmitjs)
 [![npm downloads](https://img.shields.io/npm/dm/spinonsubmitjs)](https://img.shields.io/npm/dm/spinonsubmitjs)
 
-
-
 # SpinOnSubmitJS
 
 SpinOnSubmitJS is a lightweight JavaScript library that provides an easy way to add a spinner to a submit button when performing asynchronous actions, such as form submissions. It simplifies the process of indicating loading state and disabling the button while waiting for the action to complete.
@@ -28,7 +26,6 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
 
 ### Example 1: Basic Usage
 
-    
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton('submitBtn1', 'myForm1', (data) => {
@@ -38,16 +35,15 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
           resolve();
         }, 2000);
       });
-    });      
+    });
 
 ### Example 2: With Error Handling
 
-    
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
-      'submitBtn2', 
-      'myForm2', 
+      'submitBtn2',
+      'myForm2',
       (data) => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
@@ -59,20 +55,19 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
             }
           }, 2000);
         });
-      }, 
+      },
       (error) => {
         alert(`Error: ${error}`);
       }
-    );      
+    );
 
 ### Example 3: With Custom Spinner Color
 
-    
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
-      'submitBtn3', 
-      'myForm3', 
+      'submitBtn3',
+      'myForm3',
       (data) => {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -85,20 +80,19 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
       'blue' // Spinner color
     );
 
-
 ## With Spinner Positioning
 
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
-      'submitBtn4', 
-      'myForm4', 
+      'submitBtn4',
+      'myForm4',
       (data) => {
         return new Promise((resolve) => {
           setTimeout(() => {
             alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
             resolve();
-         
+
           }, 2000);
         });
       },
@@ -110,11 +104,17 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
 ### Example:
 
 ```javascript
+const spinnerColor = "red"; // Define your spinner color here
+const spinnerPosition = "left"; // Define the position of the spinner ('left' or 'right')
 
-    const spinnerColor = 'red'; // Define your spinner color here
-    const spinnerPosition = 'left'; // Define the position of the spinner ('left' or 'right')
-    
-    createSpinnerButton('submitBtn', 'myForm', onSubmit, onError, spinnerColor, spinnerPosition);
+createSpinnerButton(
+  "submitBtn",
+  "myForm",
+  onSubmit,
+  onError,
+  spinnerColor,
+  spinnerPosition
+);
 ```
 
 You are good to go. Now, when the submit button is clicked, the spinner will be displayed, and the button will be disabled until the asynchronous action is complete.
@@ -127,4 +127,4 @@ The [MIT license](https://opensource.org/licenses/MIT) is a widely-used open-sou
 
 Using an open-source license like the MIT license is important because it ensures that the software can be used and improved upon by as many people as possible. By releasing SpinOnSubmitJS under the MIT license, we hope to encourage others to use and contribute to the project, and to promote the wider adoption of open-source software in general.
 
-We take the licensing of SpinOnSubmitJS seriously, and believe that it is a key part of the project's success. We encourage you to read the [license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE) in full before using or contributing to the project, and to abide by its terms in your use and distribution of the software. 
+We take the licensing of SpinOnSubmitJS seriously, and believe that it is a key part of the project's success. We encourage you to read the [license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE) in full before using or contributing to the project, and to abide by its terms in your use and distribution of the software.
