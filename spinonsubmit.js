@@ -1,4 +1,6 @@
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', spinnerTemplate = '', position = 'left') {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError,
+                                    spinnerColor = 'black',
+                                    spinnerTemplate = '', position = 'left') {
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
@@ -24,13 +26,13 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
 
   const button = document.getElementById(buttonId);
   const buttonText = button.innerHTML;
-  
+
   button.innerHTML = "";
 
   const buttonLabel = document.createElement('span');
   buttonLabel.textContent = buttonText;
   buttonLabel.style.display = "inline";
-  
+
   // Add spinner based on position argument
   if (position === 'right') {
     button.appendChild(buttonLabel);
@@ -39,10 +41,10 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     button.appendChild(spinner);
     button.appendChild(buttonLabel);
   }
-  
+
   button.addEventListener('click', function(e) {
     e.preventDefault();
-    
+
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
@@ -52,18 +54,18 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     buttonLabel.style.display = "none";
 
     onSubmit(data)
-      .then(() => {
-        spinner.style.display = "none";
-        button.disabled = false;
-        buttonLabel.style.display = "inline";
-      })
-      .catch((error) => {
-        spinner.style.display = "none";
-        button.disabled = false;
-        buttonLabel.style.display = "inline";
-        if (onError) {
-          onError(error);
-        }
-      });
+        .then(() => {
+          spinner.style.display = "none";
+          button.disabled = false;
+          buttonLabel.style.display = "inline";
+        })
+        .catch((error) => {
+          spinner.style.display = "none";
+          button.disabled = false;
+          buttonLabel.style.display = "inline";
+          if (onError) {
+            onError(error);
+          }
+        });
   });
 }
