@@ -6,31 +6,42 @@
   <script type="module">
     import { createSpinnerButton } from './spinonsubmit.js';
 
-    window.onload = function() {
-      createSpinnerButton(
-        'submitBtn', 
-        'myForm', 
-        function(data) {
-          // Simulate an asynchronous action (e.g., form submission)
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              var firstName = data.firstName;
-              var lastName = data.lastName;
-              if (firstName === '' || lastName === '') {
-                reject('All fields must be filled!');
-              } else {
-                alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-                resolve();
-              }
-            }, 5000);
-          });
-        }, 
-        function(error) {
-          // Handle error
-          alert(error);
-        }
-      );
-    }  </script>
+window.onload = function() {
+  const svgSpinner = `
+    <svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+      <circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
+    </svg>
+  `;
+
+  createSpinnerButton(
+'submitBtn', 
+'myForm', 
+function(data) {
+return new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    var firstName = data.firstName;
+    var lastName = data.lastName;
+    if (firstName === '' || lastName === '') {
+      reject('All fields must be filled!');
+    } else {
+      alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
+      resolve();
+    }
+  }, 5000);
+});
+}, 
+function(error) {
+alert(error);
+},
+'red', // spinner color
+`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+ <circle cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
+</svg>`,
+'right' // position of spinner
+);
+
+}
+  </script>
 </head>
 <body>
   
@@ -57,7 +68,8 @@
     <li>In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS library.</li>
     <li>Call `createSpinnerButton`, passing in the ID of your submit button, the ID of your form, and a callback function that represents the asynchronous action to be performed when the button is clicked. The callback now also receives the form data as its first argument, so you no longer need to manually gather the data.</li>
     <li>You can also pass an error callback as a fourth argument. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.</li>
-    <li>Optionally, you can also pass a fifth argument to `createSpinnerButton` to customize the spinner's styles. This should be an object where the keys are CSS property names and the values are the desired styles.</li>
+    <li>Optionally, you can also pass a fifth argument to `createSpinnerButton` to customize the spinner's color.</li>
+    <li>A sixth optional argument can be passed to set the spinner's position to either left (default) or right.</li>
   </ol>
 
   <h3>Example 1: Basic Usage</h3>
@@ -101,7 +113,7 @@
     );
   </code></pre>
 
-  <h3>Example 3: With Custom Styles</h3>
+  <h3>Example 3: With Custom Spinner Color</h3>
 
   <pre><code>
     import { createSpinnerButton } from 'spinonsubmitjs';
@@ -118,13 +130,33 @@
         });
       },
       null,
-      {
-        backgroundColor: 'green',
-        borderRadius: '50%',
-        color: 'white'
-      }
+      'blue' // Spinner color
     );
   </code></pre>
+
+  <h3>Example 4: With Spinner Positioning</h3>
+
+  <pre><code>
+    import { createSpinnerButton } from 'spinonsubmitjs';
+
+    createSpinnerButton(
+      'submitBtn4', 
+      'myForm4', 
+      (data) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+            resolve();
+         
+          }, 2000);
+        });
+      },
+      null,
+      'green', // Spinner color
+      'right' // Spinner position
+    );
+  </code></pre>
+
 
 
   <h2>Example</h2>
