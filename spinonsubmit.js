@@ -1,5 +1,4 @@
-// spinnerButton.js
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerStyles = {}) {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerStyles = {}, spinnerHtml = null, spinnerPosition = "left") {
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
@@ -20,9 +19,18 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   `;
   document.head.appendChild(style);
 
-  const spinner = document.createElement('span');
-  spinner.className = "loader";
-  
+  let spinner;
+
+  if (spinnerHtml) {
+    const container = document.createElement('div');
+    container.innerHTML = spinnerHtml;
+    spinner = container.firstChild;
+  } else {
+    spinner = document.createElement('span');
+  }
+
+  spinner.classList.add("loader");  
+
   const button = document.getElementById(buttonId);
   const buttonText = button.innerHTML;
   
@@ -31,9 +39,15 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   const buttonLabel = document.createElement('span');
   buttonLabel.textContent = buttonText;
   buttonLabel.style.display = "inline";
-  button.appendChild(spinner);
-  button.appendChild(buttonLabel);
-  
+
+  if (spinnerPosition === "left") {
+    button.appendChild(spinner);
+    button.appendChild(buttonLabel);
+  } else if (spinnerPosition === "right") {
+    button.appendChild(buttonLabel);
+    button.appendChild(spinner);
+  }
+
   button.addEventListener('click', function(e) {
     e.preventDefault();
     
