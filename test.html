@@ -14,31 +14,32 @@
       `;
 
       createSpinnerButton(
-        'submitBtn', 
-        'myForm', 
-        function(data) {
-          // Simulate an asynchronous action (e.g., form submission)
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              var firstName = data.firstName;
-              var lastName = data.lastName;
-              if (firstName === '' || lastName === '') {
-                reject('All fields must be filled!');
-              } else {
-                alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-                resolve();
-              }
-            }, 5000);
-          });
-        }, 
-        function(error) {
-          // Handle error
-          alert(error);
-        },
-        {},  // No custom styles
-        svgSpinner,  // Custom SVG spinner
-        'right'  // Position of spinner
-      );
+  'submitBtn', 
+  'myForm', 
+  function(data) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        var firstName = data.firstName;
+        var lastName = data.lastName;
+        if (firstName === '' || lastName === '') {
+          reject('All fields must be filled!');
+        } else {
+          alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
+          resolve();
+        }
+      }, 5000);
+    });
+  }, 
+  function(error) {
+    alert(error);
+  },
+  'red', // spinner color
+  `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+     <circle cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
+   </svg>`,
+  'right' // position of spinner
+);
+
     }
   </script>
   <style>
@@ -80,6 +81,8 @@
     <input type="text" id="lastName" required><br><br>
     <button id="submitBtn">Submit</button>
   </form>
+
+  
 
 </body>
 </html>

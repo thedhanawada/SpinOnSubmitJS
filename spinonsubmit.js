@@ -1,9 +1,9 @@
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerStyles = {}, spinnerTemplate = '', position = 'left') {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', spinnerTemplate = '', position = 'left') {
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
       border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
+      border-top: 4px solid ${spinnerColor}; // Color change here
       border-radius: 50%;
       width: 20px;
       height: 20px;
@@ -19,13 +19,8 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   `;
   document.head.appendChild(style);
 
-  const parser = new DOMParser();
-  const spinnerElement = parser.parseFromString(spinnerTemplate.trim(), 'image/svg+xml').documentElement;
   const spinner = document.createElement('span');
-  spinner.appendChild(spinnerElement);
-  
-  spinner.style.display = "none";
-  Object.assign(spinner.style, spinnerStyles);
+  spinner.className = "loader";
 
   const button = document.getElementById(buttonId);
   const buttonText = button.innerHTML;
@@ -71,13 +66,4 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
         }
       });
   });
-}
-
-export function destroySpinnerButton(buttonId) {
-  const button = document.getElementById(buttonId);
-  if (!button) return;
-
-  while (button.firstChild) {
-    button.removeChild(button.firstChild);
-  }
 }
