@@ -1,4 +1,4 @@
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerStyles = {}, spinnerHtml = null, spinnerPosition = "left") {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerStyles = {}, spinnerTemplate = '', position = 'left') {
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
@@ -19,17 +19,13 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   `;
   document.head.appendChild(style);
 
-  let spinner;
-
-  if (spinnerHtml) {
-    const container = document.createElement('div');
-    container.innerHTML = spinnerHtml;
-    spinner = container.firstChild;
-  } else {
-    spinner = document.createElement('span');
-  }
-
-  spinner.classList.add("loader");  
+  const parser = new DOMParser();
+  const spinnerElement = parser.parseFromString(spinnerTemplate.trim(), 'image/svg+xml').documentElement;
+  const spinner = document.createElement('span');
+  spinner.appendChild(spinnerElement);
+  
+  spinner.style.display = "none";
+  Object.assign(spinner.style, spinnerStyles);
 
   const button = document.getElementById(buttonId);
   const buttonText = button.innerHTML;
@@ -39,15 +35,16 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   const buttonLabel = document.createElement('span');
   buttonLabel.textContent = buttonText;
   buttonLabel.style.display = "inline";
-
-  if (spinnerPosition === "left") {
-    button.appendChild(spinner);
-    button.appendChild(buttonLabel);
-  } else if (spinnerPosition === "right") {
+  
+  // Add spinner based on position argument
+  if (position === 'right') {
     button.appendChild(buttonLabel);
     button.appendChild(spinner);
+  } else {
+    button.appendChild(spinner);
+    button.appendChild(buttonLabel);
   }
-
+  
   button.addEventListener('click', function(e) {
     e.preventDefault();
     
