@@ -29,83 +29,92 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
 ### Example 1: Basic Usage
 
     
-        import { createSpinnerButton } from 'spinonsubmitjs';
-    
-        createSpinnerButton('submitBtn1', 'myForm1', (data) => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-              resolve();
-            }, 2000);
-          });
-        });
-      
+    import { createSpinnerButton } from 'spinonsubmitjs';
+
+    createSpinnerButton('submitBtn1', 'myForm1', (data) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+          resolve();
+        }, 2000);
+      });
+    });      
 
 ### Example 2: With Error Handling
 
     
-        import { createSpinnerButton } from 'spinonsubmitjs';
+    import { createSpinnerButton } from 'spinonsubmitjs';
+
+    createSpinnerButton(
+      'submitBtn2', 
+      'myForm2', 
+      (data) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (data.firstName === '') {
+              reject('First name is required!');
+            } else {
+              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+              resolve();
+            }
+          }, 2000);
+        });
+      }, 
+      (error) => {
+        alert(`Error: ${error}`);
+      }
+    );      
+
+### Example 3: With Custom Spinner Color
+
     
-        createSpinnerButton(
-          'submitBtn2', 
-          'myForm2', 
-          (data) => {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                if (data.firstName === '') {
-                  reject('First name is required!');
-                } else {
-                  alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-                  resolve();
-                }
-              }, 2000);
-            });
-          }, 
-          (error) => {
-            alert(`Error: ${error}`);
-          }
-        );
-      
+    import { createSpinnerButton } from 'spinonsubmitjs';
 
-### Example 3: With Custom Styles
+    createSpinnerButton(
+      'submitBtn3', 
+      'myForm3', 
+      (data) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+            resolve();
+          }, 2000);
+        });
+      },
+      null,
+      'blue' // Spinner color
+    );
 
-    
-        import { createSpinnerButton } from 'spinonsubmitjs';
-    
-        createSpinnerButton(
-          'submitBtn3', 
-          'myForm3', 
-          (data) => {
-            return new Promise((resolve) => {
-              setTimeout(() => {
-                alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-                resolve();
-              }, 2000);
-            });
-          },
-          null,
-          {
-            backgroundColor: 'green',
-            borderRadius: '50%',
-            color: 'white'
-          }
-        );
 
-## Customize the spinner styles (optional):
+## With Spinner Positioning
 
-You can customize the spinner styles by passing an optional spinnerStyles object as the fourth argument to createSpinnerButton. This object should contain CSS styles that will be applied to the spinner element.
+    import { createSpinnerButton } from 'spinonsubmitjs';
+
+    createSpinnerButton(
+      'submitBtn4', 
+      'myForm4', 
+      (data) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+            resolve();
+         
+          }, 2000);
+        });
+      },
+      null,
+      'green', // Spinner color
+      'right' // Spinner position
+    );
 
 ### Example:
 
 ```javascript
 
-    const spinnerStyles = {
-      width: '24px',
-      height: '24px',
-      // Add any other custom styles here
-    };
-
-    createSpinnerButton('submitBtn', 'myForm', onSubmit, spinnerStyles);
+    const spinnerColor = 'red'; // Define your spinner color here
+    const spinnerPosition = 'left'; // Define the position of the spinner ('left' or 'right')
+    
+    createSpinnerButton('submitBtn', 'myForm', onSubmit, onError, spinnerColor, spinnerPosition);
 ```
 
 You are good to go. Now, when the submit button is clicked, the spinner will be displayed, and the button will be disabled until the asynchronous action is complete.
