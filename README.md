@@ -32,7 +32,7 @@ Using **SpinOnSubmitJS** in your project is straightforward. Follow these steps:
 Remember, spinnerOptions is an optional parameter. If you want the spinner with default configurations, you don't need to pass this argument.
 
 ### Example 1: Basic Usage
-
+```javascript
     
     import { createSpinnerButton } from 'spinonsubmitjs';
 
@@ -43,11 +43,11 @@ Remember, spinnerOptions is an optional parameter. If you want the spinner with 
           resolve();
         }, 2000);
       });
-    });      
+    });  
+  ```    
 
 ### Example 2: With Error Handling
-
-    
+```javascript   
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
@@ -69,10 +69,10 @@ Remember, spinnerOptions is an optional parameter. If you want the spinner with 
         alert(`Error: ${error}`);
       }
     );      
+```
 
 ### Example 3: With Custom Spinner Color
-
-    
+```javascript 
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
@@ -89,10 +89,10 @@ Remember, spinnerOptions is an optional parameter. If you want the spinner with 
       null,
       'blue' // Spinner color
     );
-
+```
 
 ### Example 4: With Spinner Positioning
-
+```javascript
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
@@ -111,7 +111,7 @@ Remember, spinnerOptions is an optional parameter. If you want the spinner with 
       'green', // Spinner color
       'right' // Spinner position
     );
-
+```
 ### Example 5: With Error Handling and Custom Spinner:
 
 ```javascript
