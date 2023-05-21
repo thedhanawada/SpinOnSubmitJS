@@ -7,12 +7,6 @@
    import { createSpinnerButton } from './spinonsubmit.js';
 
 window.onload = function() {
-  const svgSpinner = `
-    <svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-      <circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
-    </svg>
-  `;
-
   createSpinnerButton(
     'submitBtn',
     'myForm',
@@ -27,7 +21,7 @@ window.onload = function() {
             alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
             resolve();
           }
-        }, 5000);
+        }, 2000);
       });
     },
     function(error) {
@@ -35,7 +29,11 @@ window.onload = function() {
       console.error(error);
     },
     'red',            // Spinner color
-    svgSpinner,       // Spinner template
+    {                 // Spinner style properties
+      'background-image': `url('data:image/svg+xml,<svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/></svg>')`,
+      'background-repeat': 'no-repeat',
+      'background-position': 'center'
+    },
     'right'           // Spinner position
   );
 }
