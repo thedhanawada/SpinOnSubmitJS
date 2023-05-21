@@ -32,8 +32,7 @@ Using **SpinOnSubmitJS** in your project is straightforward. Follow these steps:
 Remember, spinnerOptions is an optional parameter. If you want the spinner with default configurations, you don't need to pass this argument.
 
 ### Example 1: Basic Usage
-```javascript
-    
+```javascript 
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton('submitBtn1', 'myForm1', (data) => {
@@ -115,39 +114,38 @@ Remember, spinnerOptions is an optional parameter. If you want the spinner with 
 ### Example 5: With Error Handling and Custom Spinner:
 
 ```javascript
+    import { createSpinnerButton } from 'spinonsubmitjs';
 
-import { createSpinnerButton } from 'spinonsubmitjs';
+    const svgSpinner = `
+      <svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
+      </svg>
+    `;
 
-const svgSpinner = `
-  <svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-    <circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
-  </svg>
-`;
-
-createSpinnerButton(
-  'submitBtn4', 
-  'myForm4', 
-  (data) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (data.firstName === '' || data.lastName === '') {
-          reject('All fields must be filled!');
-        } else {
-          alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-          resolve();
-        }
-      }, 2000);
-    });
-  }, 
-  (error) => {
-    alert(`Error: ${error}`);
-  },
-  {
-    color: 'red', // Spinner color
-    template: svgSpinner, // Custom spinner template
-    position: 'right' // Spinner position
-  }
-);
+    createSpinnerButton(
+      'submitBtn4', 
+      'myForm4', 
+      (data) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (data.firstName === '' || data.lastName === '') {
+              reject('All fields must be filled!');
+            } else {
+              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+              resolve();
+            }
+          }, 2000);
+        });
+      }, 
+      (error) => {
+        alert(`Error: ${error}`);
+      },
+      {
+        color: 'red', // Spinner color
+        template: svgSpinner, // Custom spinner template
+        position: 'right' // Spinner position
+      }
+    );
 ```
 
 You are good to go. Now, when the submit button is clicked, the spinner will be displayed, and the button will be disabled until the asynchronous action is complete.
