@@ -18,17 +18,21 @@ npm install spinonsubmitjs
 
 ## Usage and Examples
 
-Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
+Using **SpinOnSubmitJS** in your project is straightforward. Follow these steps:
 
-- Create a submit button element in your HTML form with a unique ID.
-- In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS library.
-- Call `createSpinnerButton`, passing in the ID of your submit button, the ID of your form, and a callback function that represents the asynchronous action to be performed when the button is clicked. The callback now also receives the form data as its first argument, so you no longer need to manually gather the data.
-- You can also pass an error callback as a fourth argument. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.
-- Optionally, you can also pass a fifth argument to `createSpinnerButton` to customize the spinner's styles. This should be an object where the keys are CSS property names and the values are the desired styles.
+1. Create a submit button element in your HTML form with a unique ID.
+2. In your JavaScript file, import the createSpinnerButton function from the SpinOnSubmitJS library.
+3. Call createSpinnerButton, passing in the ID of your submit button, the ID of your form, and a callback function that represents the asynchronous action to be performed when the button is clicked. The callback now also receives the form data as its first argument, so you no longer need to manually gather the data.
+4. You can also pass an error callback as a fourth argument. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.
+5. The fifth argument has now been updated to spinnerOptions, which is an object that can have the following properties:
+	- **color**: This sets the color of the default spinner. If you're providing a custom spinner template, this will be ignored.
+	- **template**: This allows you to provide a custom spinner. This should be a string of HTML. If you provide this, the color option will be ignored.
+	- **position**: This can be either 'left' or 'right', and sets the position of the spinner in relation to the button text.
+
+Remember, spinnerOptions is an optional parameter. If you want the spinner with default configurations, you don't need to pass this argument.
 
 ### Example 1: Basic Usage
-
-    
+```javascript 
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton('submitBtn1', 'myForm1', (data) => {
@@ -38,11 +42,11 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
           resolve();
         }, 2000);
       });
-    });      
+    });  
+  ```    
 
 ### Example 2: With Error Handling
-
-    
+```javascript   
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
@@ -64,10 +68,10 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
         alert(`Error: ${error}`);
       }
     );      
+```
 
 ### Example 3: With Custom Spinner Color
-
-    
+```javascript 
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
@@ -84,10 +88,10 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
       null,
       'blue' // Spinner color
     );
+```
 
-
-## With Spinner Positioning
-
+### Example 4: With Spinner Positioning
+```javascript
     import { createSpinnerButton } from 'spinonsubmitjs';
 
     createSpinnerButton(
@@ -106,15 +110,42 @@ Using SpinOnSubmitJS in your project is straightforward. Follow these steps:
       'green', // Spinner color
       'right' // Spinner position
     );
-
-### Example:
+```
+### Example 5: With Error Handling and Custom Spinner:
 
 ```javascript
+    import { createSpinnerButton } from 'spinonsubmitjs';
 
-    const spinnerColor = 'red'; // Define your spinner color here
-    const spinnerPosition = 'left'; // Define the position of the spinner ('left' or 'right')
-    
-    createSpinnerButton('submitBtn', 'myForm', onSubmit, onError, spinnerColor, spinnerPosition);
+    const svgSpinner = `
+      <svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
+      </svg>
+    `;
+
+    createSpinnerButton(
+      'submitBtn4', 
+      'myForm4', 
+      (data) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (data.firstName === '' || data.lastName === '') {
+              reject('All fields must be filled!');
+            } else {
+              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+              resolve();
+            }
+          }, 2000);
+        });
+      }, 
+      (error) => {
+        alert(`Error: ${error}`);
+      },
+      {
+        color: 'red', // Spinner color
+        template: svgSpinner, // Custom spinner template
+        position: 'right' // Spinner position
+      }
+    );
 ```
 
 You are good to go. Now, when the submit button is clicked, the spinner will be displayed, and the button will be disabled until the asynchronous action is complete.
