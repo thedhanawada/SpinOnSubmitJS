@@ -1,9 +1,16 @@
-export function createSpinnerButton(buttonId, formId, onSubmit, onError,
-                                    spinnerColor = 'black',
-                                    spinnerTemplate = '', position = 'left') {
+export function createSpinnerButton(
+  buttonId,
+  formId,
+  onSubmit,
+  onError,
+  spinnerColor = "black",
+  spinnerTemplate = "",
+  position = "left"
+) {
   if (!buttonId || !formId || !onSubmit) {
     throw new Error(
-        'Missing required parameters: buttonId, formId and onSubmit are required.');
+      "Missing required parameters: buttonId, formId and onSubmit are required."
+    );
   }
 
   const button = document.getElementById(buttonId);
@@ -12,7 +19,7 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError,
     return;
   }
 
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.innerHTML = `
     .loader {
       border: 4px solid #f3f3f3;
@@ -32,18 +39,18 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError,
   `;
   document.head.appendChild(style);
 
-  const spinner = document.createElement('span');
+  const spinner = document.createElement("span");
   spinner.className = "loader";
 
   const buttonText = button.innerHTML;
 
   button.innerHTML = "";
 
-  const buttonLabel = document.createElement('span');
+  const buttonLabel = document.createElement("span");
   buttonLabel.textContent = buttonText;
   buttonLabel.style.display = "inline";
 
-  if (position === 'right') {
+  if (position === "right") {
     button.appendChild(buttonLabel);
     button.appendChild(spinner);
   } else {
@@ -51,7 +58,7 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError,
     button.appendChild(buttonLabel);
   }
 
-  button.addEventListener('click', function(e) {
+  button.addEventListener("click", function (e) {
     e.preventDefault();
 
     const form = document.getElementById(formId);
@@ -63,20 +70,20 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError,
     buttonLabel.style.display = "none";
 
     onSubmit(data)
-        .then(() => {
-          spinner.style.display = "none";
-          button.disabled = false;
-          buttonLabel.style.display = "inline";
-        })
-        .catch((error) => {
-          spinner.style.display = "none";
-          button.disabled = false;
-          buttonLabel.style.display = "inline";
-          if (onError) {
-            onError(error);
-          } else {
-            console.error(error);
-          }
-        });
+      .then(() => {
+        spinner.style.display = "none";
+        button.disabled = false;
+        buttonLabel.style.display = "inline";
+      })
+      .catch((error) => {
+        spinner.style.display = "none";
+        button.disabled = false;
+        buttonLabel.style.display = "inline";
+        if (onError) {
+          onError(error);
+        } else {
+          console.error(error);
+        }
+      });
   });
 }
