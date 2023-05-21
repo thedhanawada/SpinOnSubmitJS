@@ -1,9 +1,19 @@
 export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', spinnerTemplate = '', position = 'left') {
+  if (!buttonId || !formId || !onSubmit) {
+    throw new Error('Missing required parameters: buttonId, formId and onSubmit are required.');
+  }
+
+  const button = document.getElementById(buttonId);
+  if (!button) {
+    console.error(`No element found with id ${buttonId}`);
+    return;
+  }
+
   const style = document.createElement('style');
   style.innerHTML = `
     .loader {
       border: 4px solid #f3f3f3;
-      border-top: 4px solid ${spinnerColor}; // Color change here
+      border-top: 4px solid ${spinnerColor};
       border-radius: 50%;
       width: 20px;
       height: 20px;
@@ -22,7 +32,6 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   const spinner = document.createElement('span');
   spinner.className = "loader";
 
-  const button = document.getElementById(buttonId);
   const buttonText = button.innerHTML;
   
   button.innerHTML = "";
@@ -31,7 +40,6 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   buttonLabel.textContent = buttonText;
   buttonLabel.style.display = "inline";
   
-  // Add spinner based on position argument
   if (position === 'right') {
     button.appendChild(buttonLabel);
     button.appendChild(spinner);
@@ -63,6 +71,9 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
         buttonLabel.style.display = "inline";
         if (onError) {
           onError(error);
+        } else
+        {
+          console.error(error);
         }
       });
   });
