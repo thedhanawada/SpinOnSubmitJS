@@ -1,6 +1,9 @@
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', spinnerTemplate = '', position = 'left') {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError,
+                                    spinnerColor = 'black',
+                                    spinnerTemplate = '', position = 'left') {
   if (!buttonId || !formId || !onSubmit) {
-    throw new Error('Missing required parameters: buttonId, formId and onSubmit are required.');
+    throw new Error(
+        'Missing required parameters: buttonId, formId and onSubmit are required.');
   }
 
   const button = document.getElementById(buttonId);
@@ -33,13 +36,13 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   spinner.className = "loader";
 
   const buttonText = button.innerHTML;
-  
+
   button.innerHTML = "";
 
   const buttonLabel = document.createElement('span');
   buttonLabel.textContent = buttonText;
   buttonLabel.style.display = "inline";
-  
+
   if (position === 'right') {
     button.appendChild(buttonLabel);
     button.appendChild(spinner);
@@ -47,10 +50,10 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     button.appendChild(spinner);
     button.appendChild(buttonLabel);
   }
-  
+
   button.addEventListener('click', function(e) {
     e.preventDefault();
-    
+
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
@@ -60,21 +63,20 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     buttonLabel.style.display = "none";
 
     onSubmit(data)
-      .then(() => {
-        spinner.style.display = "none";
-        button.disabled = false;
-        buttonLabel.style.display = "inline";
-      })
-      .catch((error) => {
-        spinner.style.display = "none";
-        button.disabled = false;
-        buttonLabel.style.display = "inline";
-        if (onError) {
-          onError(error);
-        } else
-        {
-          console.error(error);
-        }
-      });
+        .then(() => {
+          spinner.style.display = "none";
+          button.disabled = false;
+          buttonLabel.style.display = "inline";
+        })
+        .catch((error) => {
+          spinner.style.display = "none";
+          button.disabled = false;
+          buttonLabel.style.display = "inline";
+          if (onError) {
+            onError(error);
+          } else {
+            console.error(error);
+          }
+        });
   });
 }
