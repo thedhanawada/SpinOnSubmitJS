@@ -1,6 +1,6 @@
 {
   "name": "spinonsubmitjs",
-  "version": "2.1.1",
+  "version": "3.0.1",
   "description": "SpinOnSubmitJS is a compact JavaScript library that enhances your form submit buttons with a visual loading spinner, providing immediate and intuitive feedback to users upon submission",
   "main": "spinonsubmit.js",
   "scripts": {
