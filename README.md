@@ -66,10 +66,10 @@ If you have any other questions or if there's anything else you'd like to change
 
 ## License
 
-SpinOnSubmitJS is released under the [MIT license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE). This is a permissive open-source software license that allows for free use, modification, and distribution of the software without requiring payment or attribution.
+SpinOnSubmitJS is released under the [MIT license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE). This is a permissive open-source software license, which allows for free use, modification, and distribution of the software without requiring payment or attribution.
 
-The [MIT license](https://opensource.org/licenses/MIT) is a widely-used open-source software license that permits free use, modification, and distribution of the software without requiring payment or attribution. This means that anyone can use, modify, and distribute the software without having to pay or give credit to the original author.
+The [MIT license](https://opensource.org/licenses/MIT) is a widely-used open-source software license that gives permission for free use, modification, and distribution of the software, without any obligation of payment or attribution. This signifies that anyone has the liberty to use, modify, and distribute the software without needing to make any payment or credit the original author.
 
-Using an open-source license like the MIT license is important because it ensures that the software can be used and improved upon by as many people as possible. By releasing SpinOnSubmitJS under the MIT license, we hope to encourage others to use and contribute to the project, and to promote the wider adoption of open-source software in general.
+The adoption of an open-source license like the MIT license is significant because it ensures that the software can be utilized and enhanced by as many individuals as possible. By releasing SpinOnSubmitJS under the MIT license, it's aimed to inspire others to use and contribute to the project, and to foster the broader adoption of open-source software in general.
 
-We take the licensing of SpinOnSubmitJS seriously, and believe that it is a key part of the project's success. We encourage you to read the [license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE) in full before using or contributing to the project, and to abide by its terms in your use and distribution of the software. 
+The licensing of SpinOnSubmitJS is considered with great importance, believing it as a fundamental part of the project's success. You are encouraged to read the [license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE) thoroughly before using or contributing to the project, and to comply with its terms in your use and distribution of the software.
