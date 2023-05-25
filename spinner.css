@@ -1,6 +1,5 @@
 .loader {
-    border: 4px solid #f3f3f3; /* This color should be changed to transparent */
-    border-top: 4px solid black; /* This color should be customized per spinner, not here */
+    border: 4px solid #f3f3f3; /* Light grey */
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -13,8 +12,7 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }  
-
+  
   .button-label {
     font-size: 14px; /* Adjust as needed */
-  }
-  
+  }  
