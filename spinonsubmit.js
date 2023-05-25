@@ -1,4 +1,10 @@
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', spinnerTemplate = '', position = 'left') {
+function resetButton(button, spinner, buttonLabel) {
+  spinner.style.display = "none";
+  button.disabled = false;
+  buttonLabel.style.display = "inline";
+}
+
+export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', position = 'left') {
   if (!buttonId || !formId || !onSubmit) {
     throw new Error('Missing required parameters: buttonId, formId and onSubmit are required.');
   }
@@ -9,29 +15,10 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     return;
   }
 
-  const style = document.createElement('style');
-  style.innerHTML = `
-    .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid ${spinnerColor};
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 1s linear infinite;
-      margin-right: 5px;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  `;
-  document.head.appendChild(style);
-
   const spinner = document.createElement('span');
   spinner.className = "loader";
-
+  spinner.style.borderColor = 'transparent ' + spinnerColor + ' ' + spinnerColor + ' ' + spinnerColor;
+  
   const buttonText = button.innerHTML;
   
   button.innerHTML = "";
@@ -48,7 +35,7 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     button.appendChild(buttonLabel);
   }
   
-  button.addEventListener('click', function(e) {
+  button.addEventListener('click', (e) => {
     e.preventDefault();
     
     const form = document.getElementById(formId);
@@ -60,19 +47,12 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     buttonLabel.style.display = "none";
 
     onSubmit(data)
-      .then(() => {
-        spinner.style.display = "none";
-        button.disabled = false;
-        buttonLabel.style.display = "inline";
-      })
+      .then(() => resetButton(button, spinner, buttonLabel))
       .catch((error) => {
-        spinner.style.display = "none";
-        button.disabled = false;
-        buttonLabel.style.display = "inline";
+        resetButton(button, spinner, buttonLabel);
         if (onError) {
           onError(error);
-        } else
-        {
+        } else {
           console.error(error);
         }
       });
