@@ -74,33 +74,31 @@
 
 <pre>
 <code>
-createSpinnerButton(
-  'submitBtn',
-  'myForm',
-  function(data) {
-    return new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        var firstName = data.firstName;
-        var lastName = data.lastName;
-        if (firstName === '' || lastName === '') {
-          reject('All fields must be filled!');
-        } else {
-          alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-          resolve();
-        }
-      }, 2000);
-    });
-  },
-  function(error) {
-    alert(error);
-    console.error(error);
-  },
-  {
-    spinnerColor: 'white', // Spinner color
-    position: 'right',  // Spinner position
-    hideLabelWhileLoading: true     // hideLabelWhileLoading
-  }
-);
+  createSpinnerButton(
+    'submitBtn',
+    'myForm',
+    function(data) {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          var firstName = data.firstName;
+          var lastName = data.lastName;
+          if (firstName === '' || lastName === '') {
+            reject('All fields must be filled!');
+          } else {
+            alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
+            resolve();
+          }
+        }, 2000);
+      });
+    },
+    function(error) {
+      alert(error);
+      console.error(error);
+    },
+    'white', // Spinner color
+    'right',  // Spinner position
+    false     // hideLabelWhileLoading
+  );
 </code>
 </pre>
 
