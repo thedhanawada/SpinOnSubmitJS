@@ -35,31 +35,34 @@ Here's an example of how you might use `createSpinnerButton`:
 
 ```javascript
 createSpinnerButton(
-        'submitBtn',
-        'myForm',
-        function(data) {
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              var firstName = data.firstName;
-              var lastName = data.lastName;
-              if (firstName === '' || lastName === '') {
-                reject('All fields must be filled!');
-              } else {
-                alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-                resolve();
-              }
-            }, 2000);
-          });
-        },
-        function(error) {
-          alert(error);
-          console.error(error);
-        },
-        'white', // Spinner color
-        'right',  // Spinner position
-        true     // hideLabelWhileLoading
-      );
+  "submitBtn",
+  "myForm",
+  function (data) {
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        var firstName = data.firstName;
+        var lastName = data.lastName;
+        if (firstName === "" || lastName === "") {
+          reject("All fields must be filled!");
+        } else {
+          alert(
+            "Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName
+          );
+          resolve();
+        }
+      }, 2000);
+    });
+  },
+  function (error) {
+    alert(error);
+    console.error(error);
+  },
+  "white", // Spinner color
+  "right", // Spinner position
+  true // hideLabelWhileLoading
+);
 ```
+
 This creates a button that, when clicked, gathers data from a form, displays a yellow spinner to the right of the button text, and pops up an alert with the form data. If any fields are empty, the function will reject with an error, and the error callback will alert the user. If the 'hideLabelWhileLoading' option is set to true, the button's label will be hidden while the spinner is displayed.
 
 If you have any other questions or if there's anything else you'd like to change, feel free to ask!
