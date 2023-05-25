@@ -3,8 +3,6 @@
 [![npm version](https://img.shields.io/bundlephobia/min/spinonsubmitjs)](https://img.shields.io/bundlephobia/min/spinonsubmitjs)
 [![npm downloads](https://img.shields.io/npm/dm/spinonsubmitjs)](https://img.shields.io/npm/dm/spinonsubmitjs)
 
-
-
 # SpinOnSubmitJS
 
 SpinOnSubmitJS is a lightweight JavaScript library that provides an easy way to add a spinner to a submit button when performing asynchronous actions, such as form submissions. It simplifies the process of indicating loading state and disabling the button while waiting for the action to complete.
@@ -18,137 +16,56 @@ npm install spinonsubmitjs
 
 ## Usage and Examples
 
-Using **SpinOnSubmitJS** in your project is straightforward. Follow these steps:
+Using **SpinOnSubmitJS** in your project is easy. Follow these steps:
 
 1. Create a submit button element in your HTML form with a unique ID.
-2. In your JavaScript file, import the createSpinnerButton function from the SpinOnSubmitJS library.
-3. Call createSpinnerButton, passing in the ID of your submit button, the ID of your form, and a callback function that represents the asynchronous action to be performed when the button is clicked. The callback now also receives the form data as its first argument, so you no longer need to manually gather the data.
-4. You can also pass an error callback as a fourth argument. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.
-5. The fifth argument has now been updated to spinnerOptions, which is an object that can have the following properties:
-	- **color**: This sets the color of the default spinner. If you're providing a custom spinner template, this will be ignored.
-	- **template**: This allows you to provide a custom spinner. This should be a string of HTML. If you provide this, the color option will be ignored.
-	- **position**: This can be either 'left' or 'right', and sets the position of the spinner in relation to the button text.
+2. In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS library.
+3. Call `createSpinnerButton`, passing in the following arguments:
+   - The ID of your submit button
+   - The ID of your form
+   - A callback function representing the asynchronous action to be performed when the button is clicked. This callback receives the form data as its first argument, removing the need to manually gather the data.
+   - An error callback function. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.
+   - An options object that can contain the following properties:
+     - `spinnerColor`: This sets the color of the default spinner.
+     - `position`: This can be either 'left' or 'right', and sets the position of the spinner in relation to the button text.
+     - `hideLabelWhileLoading`: This can be either true or false, and determines whether or not the button's text is hidden while the spinner is displayed.
+4. Remember, the options object is an optional parameter. If you want the spinner with default configurations, you don't need to pass this argument.
 
-Remember, spinnerOptions is an optional parameter. If you want the spinner with default configurations, you don't need to pass this argument.
+Here's an example of how you might use `createSpinnerButton`:
 
-### Example 1: Basic Usage
-```javascript 
-    import { createSpinnerButton } from 'spinonsubmitjs';
-
-    createSpinnerButton('submitBtn1', 'myForm1', (data) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
+```javascript
+createSpinnerButton(
+  'submitBtn',
+  'myForm',
+  function(data) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        var firstName = data.firstName;
+        var lastName = data.lastName;
+        if (firstName === '' || lastName === '') {
+          reject('All fields must be filled!');
+        } else {
+          alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
           resolve();
-        }, 2000);
-      });
-    });  
-  ```    
-
-### Example 2: With Error Handling
-```javascript   
-    import { createSpinnerButton } from 'spinonsubmitjs';
-
-    createSpinnerButton(
-      'submitBtn2', 
-      'myForm2', 
-      (data) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            if (data.firstName === '') {
-              reject('First name is required!');
-            } else {
-              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-              resolve();
-            }
-          }, 2000);
-        });
-      }, 
-      (error) => {
-        alert(`Error: ${error}`);
-      }
-    );      
+        }
+      }, 2000);
+    });
+  },
+  function(error) {
+    alert(error);
+    console.error(error);
+  },
+  {
+    spinnerColor: 'yellow', 
+    position: 'right', 
+    hideLabelWhileLoading: false
+  }
+);
 ```
 
-### Example 3: With Custom Spinner Color
-```javascript 
-    import { createSpinnerButton } from 'spinonsubmitjs';
+This creates a button that, when clicked, gathers data from a form, displays a yellow spinner to the right of the button text, and pops up an alert with the form data. If any fields are empty, the function will reject with an error, and the error callback will alert the user. If the 'hideLabelWhileLoading' option is set to true, the button's label will be hidden while the spinner is displayed.
 
-    createSpinnerButton(
-      'submitBtn3', 
-      'myForm3', 
-      (data) => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-            resolve();
-          }, 2000);
-        });
-      },
-      null,
-      'blue' // Spinner color
-    );
-```
-
-### Example 4: With Spinner Positioning
-```javascript
-    import { createSpinnerButton } from 'spinonsubmitjs';
-
-    createSpinnerButton(
-      'submitBtn4', 
-      'myForm4', 
-      (data) => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-            resolve();
-         
-          }, 2000);
-        });
-      },
-      null,
-      'green', // Spinner color
-      'right' // Spinner position
-    );
-```
-### Example 5: With Error Handling and Custom Spinner:
-
-```javascript
-    import { createSpinnerButton } from 'spinonsubmitjs';
-
-    const svgSpinner = `
-      <svg class="custom-spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <circle class="spinner-path" cx="25" cy="25" r="20" stroke="black" fill="none" stroke-width="4"/>
-      </svg>
-    `;
-
-    createSpinnerButton(
-      'submitBtn4', 
-      'myForm4', 
-      (data) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            if (data.firstName === '' || data.lastName === '') {
-              reject('All fields must be filled!');
-            } else {
-              alert(`Submitted!\nFirst Name: ${data.firstName}\nLast Name: ${data.lastName}`);
-              resolve();
-            }
-          }, 2000);
-        });
-      }, 
-      (error) => {
-        alert(`Error: ${error}`);
-      },
-      {
-        color: 'red', // Spinner color
-        template: svgSpinner, // Custom spinner template
-        position: 'right' // Spinner position
-      }
-    );
-```
-
-You are good to go. Now, when the submit button is clicked, the spinner will be displayed, and the button will be disabled until the asynchronous action is complete.
+If you have any other questions or if there's anything else you'd like to change, feel free to ask!
 
 ## License
 
