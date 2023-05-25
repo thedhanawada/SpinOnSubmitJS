@@ -6,9 +6,12 @@ function resetButton(button, spinner, buttonLabel, hideLabelWhileLoading) {
   }
 }
 
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', position = 'left', hideLabelWhileLoading = true) {
+export function createSpinnerButton(buttonId, formId, onSubmit, onError,
+                                    spinnerColor = 'black', position = 'left',
+                                    hideLabelWhileLoading = true) {
   if (!buttonId || !formId || !onSubmit) {
-    throw new Error('Missing required parameters: buttonId, formId and onSubmit are required.');
+    throw new Error(
+        'Missing required parameters: buttonId, formId and onSubmit are required.');
   }
 
   const button = document.getElementById(buttonId);
@@ -19,7 +22,8 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
 
   const spinner = document.createElement('span');
   spinner.className = "loader";
-  spinner.style.borderColor = `transparent ${spinnerColor} ${spinnerColor} ${spinnerColor}`;
+  spinner.style.borderColor =
+      `transparent ${spinnerColor} ${spinnerColor} ${spinnerColor}`;
 
   const buttonLabel = document.createElement('span');
   buttonLabel.textContent = button.textContent;
@@ -34,8 +38,9 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
   }
 
   button.textContent = "";
-  
-  const elements = position === 'right' ? [buttonLabel, spinner] : [spinner, buttonLabel];
+
+  const elements = position === 'right' ? [ buttonLabel, spinner ]
+                                        : [ spinner, buttonLabel ];
   elements.forEach(element => button.appendChild(element));
 
   button.addEventListener('click', (e) => {
@@ -51,10 +56,11 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     }
 
     onSubmit(data)
-      .then(() => resetButton(button, spinner, buttonLabel, hideLabelWhileLoading))
-      .catch((error) => {
-        resetButton(button, spinner, buttonLabel, hideLabelWhileLoading);
-        onError?.(error);
-      });
+        .then(() => resetButton(button, spinner, buttonLabel,
+                                hideLabelWhileLoading))
+        .catch((error) => {
+          resetButton(button, spinner, buttonLabel, hideLabelWhileLoading);
+          onError?.(error);
+        });
   });
 }
