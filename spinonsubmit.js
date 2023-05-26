@@ -1,9 +1,11 @@
 function resetButton(button, spinner, buttonLabel, hideLabelWhileLoading) {
-  spinner.style.display = "none";
-  button.disabled = false;
-  if (hideLabelWhileLoading) {
-    buttonLabel.style.display = "inline";
-  }
+  requestAnimationFrame(() => {
+    spinner.style.display = "none";
+    button.disabled = false;
+    if (hideLabelWhileLoading) {
+      buttonLabel.style.display = "inline";
+    }
+  });
 }
 
 export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', position = 'left', hideLabelWhileLoading = true) {
@@ -33,10 +35,12 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     spinner.style.marginLeft = "5px";
   }
 
-  button.textContent = "";
+  requestAnimationFrame(() => {
+    button.textContent = "";
   
-  const elements = position === 'right' ? [buttonLabel, spinner] : [spinner, buttonLabel];
-  elements.forEach(element => button.appendChild(element));
+    const elements = position === 'right' ? [buttonLabel, spinner] : [spinner, buttonLabel];
+    elements.forEach(element => button.appendChild(element));
+  });
 
   button.addEventListener('click', (e) => {
     e.preventDefault();
@@ -44,17 +48,19 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
     const form = document.getElementById(formId);
     const data = Object.fromEntries(new FormData(form).entries());
 
-    spinner.style.display = "inline-block";
-    button.disabled = true;
-    if (hideLabelWhileLoading) {
-      buttonLabel.style.display = "none";
-    }
+    requestAnimationFrame(() => {
+      spinner.style.display = "inline-block";
+      button.disabled = true;
+      if (hideLabelWhileLoading) {
+        buttonLabel.style.display = "none";
+      }
 
-    onSubmit(data)
-      .then(() => resetButton(button, spinner, buttonLabel, hideLabelWhileLoading))
-      .catch((error) => {
-        resetButton(button, spinner, buttonLabel, hideLabelWhileLoading);
-        onError?.(error);
-      });
+      onSubmit(data)
+        .then(() => resetButton(button, spinner, buttonLabel, hideLabelWhileLoading))
+        .catch((error) => {
+          resetButton(button, spinner, buttonLabel, hideLabelWhileLoading);
+          onError?.(error);
+        });
+    });
   });
 }
