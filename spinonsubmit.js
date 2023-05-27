@@ -1,14 +1,37 @@
+/**
+ * Resets the state of the button after loading is complete.
+ *
+ * @param {HTMLElement} button - The button that was clicked to submit the form.
+ * @param {HTMLElement} spinner - The spinner element.
+ * @param {HTMLElement} buttonLabel - The label of the button.
+ * @param {boolean} hideLabelWhileLoading - Whether to hide the label while loading.
+ */
 function resetButton(button, spinner, buttonLabel, hideLabelWhileLoading) {
   spinner.style.display = "none";
   button.disabled = false;
   if (hideLabelWhileLoading) {
     buttonLabel.style.display = "inline";
   }
+
+  const event = new CustomEvent('loadingFinished');
+  button.dispatchEvent(event);
 }
 
+/**
+ * Creates a button with a spinner that shows while the form is being submitted.
+ *
+ * @export
+ * @param {string} buttonId - The ID of the button element.
+ * @param {string} formId - The ID of the form element.
+ * @param {function} onSubmit - The function to run when the form is submitted.
+ * @param {function} [onError] - The function to run if an error occurs while submitting the form.
+ * @param {string} [spinnerColor='black'] - The color of the spinner.
+ * @param {string} [position='left'] - The position of the spinner relative to the label.
+ * @param {boolean} [hideLabelWhileLoading=true] - Whether to hide the label while loading.
+ */
 export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', position = 'left', hideLabelWhileLoading = true) {
-  if (!buttonId || !formId || !onSubmit) {
-    throw new Error('Missing required parameters: buttonId, formId and onSubmit are required.');
+  if (!buttonId || !formId || typeof onSubmit !== 'function') {
+    throw new Error('Missing or incorrect required parameters: buttonId, formId and onSubmit (function) are required.');
   }
 
   const button = document.getElementById(buttonId);
