@@ -1,14 +1,41 @@
+/**
+ * Resets the state of the button after loading is complete.
+ *
+ * @param {HTMLElement} button - The button that was clicked to submit the form.
+ * @param {HTMLElement} spinner - The spinner element.
+ * @param {HTMLElement} buttonLabel - The label of the button.
+ * @param {boolean} hideLabelWhileLoading - Whether to hide the label while loading.
+ */
 function resetButton(button, spinner, buttonLabel, hideLabelWhileLoading) {
   spinner.style.display = "none";
   button.disabled = false;
   if (hideLabelWhileLoading) {
     buttonLabel.style.display = "inline";
   }
+
+  const event = new CustomEvent('loadingFinished');
+  button.dispatchEvent(event);
 }
 
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', position = 'left', hideLabelWhileLoading = true) {
-  if (!buttonId || !formId || !onSubmit) {
-    throw new Error('Missing required parameters: buttonId, formId and onSubmit are required.');
+/**
+ * Creates a button with a spinner that shows while the form is being submitted.
+ *
+ * @export
+ * @param {Object} config - Configuration for spinner button.
+ */
+export function createSpinnerButton(config) {
+  const {
+    buttonId,
+    formId,
+    onSubmit,
+    onError = () => {},
+    spinnerColor = 'black',
+    position = 'left',
+    hideLabelWhileLoading = true
+  } = config;
+
+  if (typeof buttonId !== 'string' || typeof formId !== 'string' || typeof onSubmit !== 'function') {
+    throw new Error('Incorrect type for parameters: buttonId, formId should be string and onSubmit should be a function.');
   }
 
   const button = document.getElementById(buttonId);
@@ -54,7 +81,15 @@ export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinner
       .then(() => resetButton(button, spinner, buttonLabel, hideLabelWhileLoading))
       .catch((error) => {
         resetButton(button, spinner, buttonLabel, hideLabelWhileLoading);
-        onError?.(error);
+        onError(error);
       });
+  });
+
+  // Listen for when the button is removed from the DOM
+  button.addEventListener('DOMNodeRemoved', () => {
+    // Remove spinner from DOM and stop its animation
+    if(spinner.parentNode) {
+      spinner.parentNode.removeChild(spinner);
+    }
   });
 }
