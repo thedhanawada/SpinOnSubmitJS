@@ -1,78 +1,355 @@
+:root {
+  --color-primary: #007bff; /* Default primary blue for buttons */
+  --color-primary-dark: #0056b3;
+  --color-accent: #ffc107; /* Accent yellow - used for spinners */
+  --color-success: #28a745;
+  --color-info: #17a2b8;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-text-dark: #212529;
+  --color-text-light: #6c757d;
+  --color-bg-light: #f8f9fa;
+  --color-border: #dee2e6;
+  --font-family-base: 'Nunito Sans', sans-serif;
+  --font-size-base: 1rem;
+  --font-weight-bold: 600;
+  --spacing-section: 50px 0;
+  --spacing-example: 40px 0;
+  --border-radius-base: 0.25rem;
+  --box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --box-shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-  }
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-dark);
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  h1 {
-    color: #333;
-    text-align: center;
-  }
+/* Typography */
+h1, h2, h3 {
+  font-weight: var(--font-weight-bold);
+  line-height: 1.3;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
 
-  form {
-    max-width: 300px;
-    margin: 0 auto;
-    border: 2px solid #3498db; 
-    border-radius: 5px; 
-    padding: 20px; 
-  }
+p {
+  margin-bottom: 1rem;
+  color: var(--color-text-light);
+}
 
-  pre {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  border-left: 3px solid #3498db;
-  padding: 10px;
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+header.header {
+  background-color: var(--color-bg-light);
+  padding: 70px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 2rem;
+}
+
+header.header__title {
+  color: var(--color-primary);
+  font-size: 3em;
+  margin-bottom: 0.5rem;
+}
+
+header.header__subtitle {
+  color: var(--color-text-light);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+main.main-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section.section {
+  padding: var(--spacing-section);
+  border-bottom: 1px solid var(--color-border);
+}
+
+section.section:last-child {
+  border-bottom: none;
+}
+
+section.section__title {
+  color: var(--color-primary-dark);
+  font-size: 2em;
+  margin-bottom: 1.5rem;
+}
+
+section.section__description {
+  margin-bottom: 1.2rem;
+}
+
+section.section__list, section.section ol {
+  margin-bottom: 1.2rem;
+  padding-left: 1.5rem;
+}
+
+section.section__list-item, section section ol li {
+  margin-bottom: 0.7rem;
+}
+
+section.section pre.code-block {
+  background-color: transparent; /* Made background transparent */
+  border: 1px solid var(--color-border);
+  border-left: 0.3rem solid var(--color-primary);
+  padding: 1rem;
   overflow-x: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow-sm);
+  margin: 0;
+  display: block;
 }
 
-code {
-  font-family: 'Courier New', Courier, monospace;
+section.section code {
+  font-family: monospace;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--border-radius-base);
+  color: var(--color-primary-dark);
+  font-size: 0.9em;
 }
 
-  label {
-    display: block;
-    margin-bottom: 10px;
-  }
+/* Examples Section */
+section.examples-section .example-container {
+  margin-bottom: var(--spacing-example);
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  background-color: #fff;
+  box-shadow: var(--box-shadow-md);
+}
 
-  input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-  }
+section.examples-section .example-container:last-child {
+  margin-bottom: 0;
+}
 
-  button {
-    display: inline-block;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
+section.examples-section .example-container__title {
+  margin-top: 0;
+  color: var(--color-primary-dark);
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+}
 
-  button:hover {
-    background-color: #2980b9;
-  }
+section.examples-section .example-container__description {
+  color: var(--color-text-light);
+  margin-bottom: 1rem;
+}
 
-  .loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    margin-right: 5px;
-    display: none;
-  }
+section.examples-section .example-container__form {
+  padding: 1.2rem;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--border-radius-base);
+  margin-bottom: 1.2rem;
+  background-color: var(--color-bg-light);
+}
 
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+section.examples-section .example-container__button {
+  margin-bottom: 1rem;
+}
+
+section.examples-section .example-container button#spinnerOnlyBtn {
+  padding: 0.8rem 1rem;
+}
+
+section.section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+}
+
+section.section input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  box-sizing: border-box;
+}
+
+section.section button {
+  display: inline-flex; /* Use flex to align spinner and label */
+  align-items: center; /* Vertically align items */
+  background-color: var(--color-primary); /* Buttons are default blue */
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--border-radius-base);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
+  box-shadow: var(--box-shadow-sm);
+}
+
+section.section button:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--box-shadow-md);
+}
+
+section.section button:active {
+  box-shadow: var(--box-shadow-sm);
+  transform: translateY(1px);
+}
+
+section.css-customization .css-variables-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+section.css-customization .css-variables-list li {
+  margin-bottom: 0.8rem;
+}
+
+section.css-customization .css-variables-list li code {
+  background-color: var(--color-bg-light);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--border-radius-base);
+  font-size: 0.85rem;
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-border);
+}
+
+section.examples-section .example-container--discouraged {
+  opacity: 0.8;
+  border-color: var(--color-warning);
+  background-color: #fffef0;
+}
+
+section.examples-section .example-container--discouraged .example-container__tag {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  font-size: 0.7em;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--color-warning);
+  border-radius: var(--border-radius-base);
+  margin-left: 0.5em;
+  vertical-align: text-top;
+}
+
+
+/* Code Container for Copy Button */
+.code-container {
+  position: relative; /* For positioning copy button */
+  margin-bottom: 1.2rem; /* Add some space below the code block */
+}
+
+section.section pre.code-block {
+   margin-bottom: 0; /* Remove default margin from pre to manage spacing via container */
+}
+
+
+/* Copy Button Styles */
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  color: var(--color-text-light);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+  padding: 0.3rem; /* Add padding to the button itself */
+  border-radius: var(--border-radius-base); /* Rounded corners for button */
+}
+
+
+.copy-button:hover, .copy-button:focus {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05); /* Very light background on hover/focus */
+  outline: none; /* Remove default focus outline */
+}
+
+.copy-button i {
+  pointer-events: none; /* Make icon non-interactive, click area is the button */
+  vertical-align: middle; /* Align icon in button */
+}
+
+
+/* Spinner and Icons */
+.loader {
+  border: 3px solid var(--sos-spinner-border-color-light, #f0f0f0);
+  border-top-color: var(--sos-spinner-border-top-color, var(--color-accent)); /* Spinners are default yellow */
+  border-radius: 50%;
+  width: var(--sos-spinner-size, 20px);
+  height: var(--sos-spinner-size, 20px);
+  animation: spin 1s linear infinite;
+  margin-right: var(--sos-spinner-margin-right, 0.5rem);
+  display: none;
+  box-sizing: border-box;
+  border-width: 3px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.button-label {
+  font-size: 1rem;
+}
+
+/* Success and Error Icons */
+.sos-success-icon, .sos-error-icon {
+  display: inline-block;
+  width: var(--sos-icon-size, 20px);
+  height: var(--sos-icon-size, 20px);
+  margin-right: var(--sos-spinner-margin-right, 0.5rem);
+  vertical-align: middle;
+  box-sizing: border-box;
+  border-radius: 50%;
+  position: relative;
+}
+
+.sos-success-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: calc(var(--sos-icon-size, 20px) / 3);
+  height: calc(var(--sos-icon-size, 20px) / 1.5);
+  border-bottom: calc(var(--sos-icon-stroke, 2px)) solid var(--color-success);
+  border-right: calc(var(--sos-icon-stroke, 2px)) solid var(--color-success);
+  opacity: 0.9;
+}
+
+.sos-error-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: calc(var(--sos-icon-size, 20px) / 1.5);
+  height: calc(var(--sos-icon-size, 20px) / 1.5);
+  border-top: calc(var(--sos-icon-stroke, 2px)) solid var(--color-danger);
+  border-right: calc(var(--sos-icon-stroke, 2px)) solid var(--color-danger);
+  opacity: 0.9;
+}

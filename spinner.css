@@ -1,18 +1,58 @@
 .loader {
-    border: 4px solid #f3f3f3; /* Light grey */
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    margin-right: 5px;
-    display: none;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }  
-  
-  .button-label {
-    font-size: 14px; /* Adjust as needed */
-  }  
+  border: 4px solid var(--sos-spinner-border-color-light, #f3f3f3); /* Light grey, less prominent default */
+  border-top-color: var(--sos-spinner-border-top-color, white); /* White spinner for better contrast on blue buttons */
+  border-radius: 50%;
+  width: var(--sos-spinner-size, 20px);
+  height: var(--sos-spinner-size, 20px);
+  animation: spin 1s linear infinite;
+  margin-right: var(--sos-spinner-margin-right, 5px);
+  display: none;
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.button-label {
+  font-size: 1em; /* Base font size for labels */
+}
+
+/* Success and Error Icons */
+.sos-success-icon, .sos-error-icon {
+  display: inline-block;
+  width: var(--sos-icon-size, 20px);
+  height: var(--sos-icon-size, 20px);
+  margin-right: var(--sos-spinner-margin-right, 5px); /* Consistent margin with spinner */
+  vertical-align: middle; /* Align with label/spinner */
+  box-sizing: border-box;
+  border-radius: 50%; /* Make them circular */
+  position: relative; /* For icon shapes */
+}
+
+.sos-success-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: calc(var(--sos-icon-size, 20px) / 3);
+  height: calc(var(--sos-icon-size, 20px) / 1.5);
+  border-bottom: calc(var(--sos-icon-stroke, 3px)) solid var(--color-success); /* Success color from vars */
+  border-right: calc(var(--sos-icon-stroke, 3px)) solid var(--color-success);
+  opacity: 0.9; /* Slightly reduce opacity for a softer look */
+}
+
+.sos-error-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: calc(var(--sos-icon-size, 20px) / 1.5);
+  height: calc(var(--sos-icon-size, 20px) / 1.5);
+  border-top: calc(var(--sos-icon-stroke, 3px)) solid var(--color-danger); /* Error color from vars */
+  border-right: calc(var(--sos-icon-stroke, 3px)) solid var(--color-danger);
+   opacity: 0.9; /* Slightly reduce opacity for a softer look */
+}
