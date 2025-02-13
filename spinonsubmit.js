@@ -1,83 +1,181 @@
-/**
- * Resets the state of the button after loading is complete.
- *
- * @param {HTMLElement} button - The button that was clicked to submit the form.
- * @param {HTMLElement} spinner - The spinner element.
- * @param {HTMLElement} buttonLabel - The label of the button.
- * @param {boolean} hideLabelWhileLoading - Whether to hide the label while loading.
- */
-function resetButton(button, spinner, buttonLabel, hideLabelWhileLoading) {
+function resetButton(button, spinner, buttonLabel, originalButtonContent, hideLabelWhileLoading, showLabel, successIcon, errorIcon, onLoadingFinished, errorOccurred = false, resetFormFunction) {
   spinner.style.display = "none";
-  button.disabled = false;
-  if (hideLabelWhileLoading) {
-    buttonLabel.style.display = "inline";
+  if (!errorOccurred) {
+      button.disabled = false;
   }
 
-  const event = new CustomEvent('loadingFinished');
+  button.innerHTML = '';
+  const contentContainer = document.createElement('span');
+  contentContainer.className = 'button-content';
+  
+  if (typeof originalButtonContent === 'string') {
+      buttonLabel.textContent = originalButtonContent;
+  } else if (originalButtonContent instanceof DocumentFragment) {
+      buttonLabel.innerHTML = '';
+      buttonLabel.appendChild(originalButtonContent.cloneNode(true));
+  }
+
+  button.appendChild(contentContainer);
+  contentContainer.appendChild(buttonLabel);
+  if (successIcon) button.appendChild(successIcon);
+  if (errorIcon) button.appendChild(errorIcon);
+
+  if (showLabel) {
+      buttonLabel.style.display = "inline";
+  }
+
+  button.removeAttribute('aria-busy');
+
+  if (onLoadingFinished) {
+      onLoadingFinished();
+  }
+
+  const event = new CustomEvent('loadingFinished', { detail: { error: errorOccurred } });
   button.dispatchEvent(event);
+
+  if (errorOccurred && resetFormFunction) {
+      resetFormFunction();
+  }
 }
 
-/**
- * Creates a button with a spinner that shows while the form is being submitted.
- *
- * @export
- * @param {string} buttonId - The ID of the button element.
- * @param {string} formId - The ID of the form element.
- * @param {function} onSubmit - The function to run when the form is submitted.
- * @param {function} [onError] - The function to run if an error occurs while submitting the form.
- * @param {string} [spinnerColor='black'] - The color of the spinner.
- * @param {string} [position='left'] - The position of the spinner relative to the label.
- * @param {boolean} [hideLabelWhileLoading=true] - Whether to hide the label while loading.
- */
-export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerColor = 'black', position = 'left', hideLabelWhileLoading = true) {
+// Main function to create enhanced submit buttons
+export function createSpinnerButton(buttonId, formId, onSubmit, onError, spinnerOptions = {}) {
   if (!buttonId || !formId || typeof onSubmit !== 'function') {
-    throw new Error('Missing or incorrect required parameters: buttonId, formId and onSubmit (function) are required.');
+      throw new Error('Missing or incorrect required parameters.');
   }
 
+  const {
+      spinnerColor = '',
+      position = 'left',
+      hideLabelWhileLoading = true,
+      showLabel = true,
+      loadingText,
+      loadingHtml,
+      onLoadingStart,
+      onLoadingFinished,
+      showSuccessState = false,
+      showErrorState = false,
+      successAnimation = 'checkmark',
+      errorAnimation = 'shake',
+      resetForm
+  } = spinnerOptions;
+
   const button = document.getElementById(buttonId);
-  if (!button) {
-    console.error(`No element found with id ${buttonId}`);
-    return;
+  const form = document.getElementById(formId);
+
+  if (!button || !form) {
+      console.error(`No element found with id ${buttonId} or ${formId}`);
+      return;
   }
 
   const spinner = document.createElement('span');
   spinner.className = "loader";
-  spinner.style.borderColor = `transparent ${spinnerColor} ${spinnerColor} ${spinnerColor}`;
-
-  const buttonLabel = document.createElement('span');
-  buttonLabel.textContent = button.textContent;
-  buttonLabel.style.display = "inline";
-  buttonLabel.className = "button-label";
-
-  if (!hideLabelWhileLoading) {
-    spinner.style.width = "10px";
-    spinner.style.height = "10px";
-    spinner.style.borderWidth = "2px";
-    spinner.style.marginLeft = "5px";
+  if (spinnerColor) {
+      spinner.style.borderColor = `transparent ${spinnerColor} ${spinnerColor} ${spinnerColor}`;
   }
 
+  const buttonLabel = document.createElement('span');
+  buttonLabel.className = "button-label";
+  buttonLabel.style.display = showLabel ? "inline" : "none";
+
+  let originalButtonContent;
+  if (button.childNodes.length > 0) {
+      originalButtonContent = document.createDocumentFragment();
+      button.childNodes.forEach(node => originalButtonContent.appendChild(node.cloneNode(true)));
+  } else {
+      originalButtonContent = button.textContent;
+  }
+  buttonLabel.textContent = button.textContent;
+
   button.textContent = "";
-  
   const elements = position === 'right' ? [buttonLabel, spinner] : [spinner, buttonLabel];
   elements.forEach(element => button.appendChild(element));
 
+  const successIcon = document.createElement('span');
+  successIcon.className = 'sos-success-icon';
+  successIcon.style.display = 'none';
+
+  const errorIcon = document.createElement('span');
+  errorIcon.className = 'sos-error-icon';
+  errorIcon.style.display = 'none';
+
+  button.appendChild(successIcon);
+  button.appendChild(errorIcon);
+
+  function enableButtonIfFormChanged() {
+      button.disabled = false;
+      button.classList.remove('shake');
+      form.removeEventListener('input', enableButtonIfFormChanged);
+  }
+
   button.addEventListener('click', (e) => {
-    e.preventDefault();
+      e.preventDefault();
+      button.classList.remove('shake');
 
-    const form = document.getElementById(formId);
-    const data = Object.fromEntries(new FormData(form).entries());
+      const data = Object.fromEntries(new FormData(form).entries());
 
-    spinner.style.display = "inline-block";
-    button.disabled = true;
-    if (hideLabelWhileLoading) {
-      buttonLabel.style.display = "none";
-    }
+      button.disabled = true;
+      spinner.style.display = "inline-block";
+      button.setAttribute('aria-busy', 'true');
+      
+      if (onLoadingStart) {
+          onLoadingStart();
+      }
 
-    onSubmit(data)
-      .then(() => resetButton(button, spinner, buttonLabel, hideLabelWhileLoading))
-      .catch((error) => {
-        resetButton(button, spinner, buttonLabel, hideLabelWhileLoading);
-        onError?.(error);
-      });
+      if (loadingHtml) {
+          buttonLabel.style.display = 'inline';
+          buttonLabel.innerHTML = loadingHtml;
+      } else if (loadingText) {
+          buttonLabel.style.display = 'inline';
+          buttonLabel.textContent = loadingText;
+      } else if (hideLabelWhileLoading && showLabel) {
+          buttonLabel.style.display = "none";
+      }
+
+      onSubmit(data)
+          .then(() => {
+              if (showSuccessState) {
+                  spinner.style.display = 'none';
+                  successIcon.style.display = 'inline-block';
+
+                  if (successAnimation === 'checkmark') {
+                      successIcon.classList.add('checkmark');
+                  } else if (successAnimation === 'pulse') {
+                      button.classList.add('pulse');
+                  }
+
+                  setTimeout(() => {
+                      successIcon.classList.remove('checkmark');
+                      button.classList.remove('pulse');
+                      resetButton(button, spinner, buttonLabel, originalButtonContent, hideLabelWhileLoading, showLabel, successIcon, errorIcon, onLoadingFinished);
+                  }, 1500);
+              } else {
+                  resetButton(button, spinner, buttonLabel, originalButtonContent, hideLabelWhileLoading, showLabel, successIcon, errorIcon, onLoadingFinished);
+              }
+          })
+          .catch((error) => {
+              if (showErrorState) {
+                  spinner.style.display = 'none';
+                  errorIcon.style.display = 'inline-block';
+
+                  if (errorAnimation === 'shake') {
+                      button.classList.add('shake');
+                  } else if (errorAnimation === 'fade') {
+                      button.classList.add('fade-out');
+                  }
+
+                  setTimeout(() => {
+                      errorIcon.style.display = 'none';
+                      resetButton(button, spinner, buttonLabel, originalButtonContent, hideLabelWhileLoading, showLabel, successIcon, errorIcon, onLoadingFinished, true, resetForm);
+                      if (errorAnimation === "fade") {
+                          button.classList.remove('fade-out');
+                      }
+                      form.addEventListener('input', enableButtonIfFormChanged);
+                  }, 2500);
+              } else {
+                  resetButton(button, spinner, buttonLabel, originalButtonContent, hideLabelWhileLoading, showLabel, successIcon, errorIcon, onLoadingFinished, false, resetForm);
+              }
+              onError?.(error);
+          });
   });
 }

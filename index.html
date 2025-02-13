@@ -1,133 +1,586 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SpinOnSubmitJS Example</title>
-  <link rel="stylesheet" type="text/css" href="./main.css">
-  <script type="module">
-    import { createSpinnerButton } from './spinonsubmit.js';
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpinOnSubmitJS - Enhanced Button with Loading Spinners</title>
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="module" src="./spinonsubmit.js"></script>
+    <style>
+        /* Basic styles for the demo page - you'll likely have your own */
+        body { font-family: sans-serif; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .example-container { margin-bottom: 20px; border: 1px solid #eee; padding: 15px; }
+        .code-block { background-color: #f7f7f7; padding: 10px; overflow-x: auto; }
+        .copy-button { position: absolute; top: 5px; right: 5px; background-color: #555; color: white; border: none; border-radius: 3px; padding: 5px 8px; cursor: pointer; }
+        .code-container { position: relative; } /* For positioning the copy button */
+        .header { text-align: center; margin-bottom: 30px; }
+        .section { margin-bottom: 40px; }
+        .section__title { border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .section__description { line-height: 1.6; color: #555; }
+        .section__list { list-style: disc; margin-left: 20px; }
+        .example-container__title { margin-top: 0; color: #3498db;}
+        .example-container__description { margin-bottom: 10px; font-style: italic; color: #777; }
+        .example-container__button { background-color: #3498db; color: white; margin-top: 10px; }
+        .example-container--discouraged { border-color: #e74c3c; }
+        .example-container__tag { font-size: 0.8em; color: #e74c3c; }
+         /* Style to make it look more like the package's */
+        :root {
+            --color-primary: #3498db;
+            --color-primary-dark: #2980b9;
+            --color-success: #2ecc71;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #3498db;
+            --color-accent: #f1c40f;
+        }
+    </style>
+    <script type="module">
+        import { createSpinnerButton } from './spinonsubmit.js';
 
-    window.onload = function() {
-      createSpinnerButton(
-        'submitBtn',
-        'myForm',
-        function(data) {
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              var firstName = data.firstName;
-              var lastName = data.lastName;
-              if (firstName === '' || lastName === '') {
-                reject('All fields must be filled!');
-              } else {
-                alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-                resolve();
-              }
-            }, 2000);
-          });
-        },
-        function(error) {
-          alert(error);
-          console.error(error);
-        },
-        'white', // Spinner color
-        'right',  // Spinner position
-        false     // hideLabelWhileLoading
-      );
-    }
-</script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Helper Functions (Reusable for all examples) ---
+
+            function simulateAction(shouldSucceed = true, delay = 2000) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (shouldSucceed) {
+                            resolve({ message: 'Action successful!' });
+                        } else {
+                            reject(new Error('Action failed!'));
+                        }
+                    }, delay);
+                });
+            }
+
+            function handleError(error) {
+                console.error('An error occurred:', error.message);
+                alert('Error: ' + error.message); // Display a user-friendly error message.
+            }
+
+            function resetExampleForm() {
+                document.getElementById('exampleForm').reset();
+            }
+            function resetContactForm(){
+                document.getElementById('contactForm').reset();
+            }
+            // --- Example 1: Default with Enhanced Success/Error ---
+            createSpinnerButton(
+                'defaultSubmitBtn',
+                'exampleForm',
+                (data) => simulateAction(data.firstName !== '' && data.lastName !== ''), // Simulate success/failure
+                handleError,
+                {
+                    successAnimation: 'checkmark',  // Use checkmark animation
+                    errorAnimation: 'shake',      // Use shake animation
+                    resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 2: Spinner-Only (Less Common) ---
+            createSpinnerButton(
+                'spinnerOnlyBtn',
+                'exampleForm',
+                () => simulateAction(true),
+                handleError,
+                {
+                    showLabel: false,
+                    successAnimation: 'none', // No extra animation
+                    errorAnimation: 'none',  // No extra animation
+                      resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 3: Label Always Shown ---
+            createSpinnerButton(
+                'labelAlwaysShownBtn',
+                'exampleForm',
+                () => simulateAction(true),
+                handleError,
+                {
+                    position: 'right',
+                    hideLabelWhileLoading: false,
+                    successAnimation: 'pulse',
+                    errorAnimation: 'fade',
+                    resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 4: Loading Text ---
+            createSpinnerButton(
+                'loadingTextBtn',
+                'exampleForm',
+                () => simulateAction(true),
+                handleError,
+                {
+                    loadingText: 'Processing...',
+                    successAnimation: 'checkmark',
+                    errorAnimation: 'shake',
+                    resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 5: Loading HTML ---
+            createSpinnerButton(
+                'loadingHtmlBtn',
+                'exampleForm',
+                () => simulateAction(true),
+                handleError,
+                {
+                    loadingHtml: '<i class="fas fa-cog fa-spin"></i> Loading...',
+                    successAnimation: 'checkmark',
+                    errorAnimation: 'shake',
+                      resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 6: Success State (explicit) ---
+            createSpinnerButton(
+                'successStateBtn',
+                'exampleForm',
+                () => simulateAction(true), // Force success
+                handleError,  // Error handler still needed
+                {
+                    showSuccessState: true,
+                    successAnimation: 'checkmark', // Redundant, but shows explicit use
+                      resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 7: Error State (explicit) ---
+            createSpinnerButton(
+                'errorStateBtn',
+                'exampleForm',
+                () => simulateAction(false), // Force error
+                handleError,
+                {
+                    showErrorState: true,
+                    errorAnimation: 'shake', // Redundant, but shows explicit use
+                      resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 8: Callbacks ---
+            createSpinnerButton(
+                'callbackBtn',
+                'exampleForm',
+                () => simulateAction(true),
+                handleError,
+                {
+                    onLoadingStart: () => console.log('Loading started!'),
+                    onLoadingFinished: (event) => console.log('Loading finished! Error:', event.detail.error),
+                      resetForm: resetExampleForm //Resets the form
+                }
+            );
+
+            // --- Example 9: Contact Form with Different Animations ---
+            createSpinnerButton(
+                'contactSubmitBtn',
+                'contactForm',
+                (data) => simulateAction(data.email !== '' && data.message !== ''),
+                handleError,
+                {
+                    successAnimation: 'pulse',
+                    errorAnimation: 'fade',
+                    resetForm: resetContactForm
+                }
+            );
+
+
+             // --- Copy Code Functionality ---
+            function setupCodeCopy() {
+              document.querySelectorAll('.code-block').forEach(pre => {
+                  const copyButton = document.createElement('button');
+                  copyButton.className = 'copy-button';
+                  copyButton.innerHTML = '<i class="fas fa-copy"></i>'; // Font Awesome copy icon
+                  copyButton.addEventListener('click', () => {
+                      const code = pre.querySelector('code').textContent;
+                      navigator.clipboard.writeText(code).then(() => {
+                          copyButton.innerHTML = '<i class="fas fa-check" style="color: white;"></i>'; // Changed to white tick
+                          setTimeout(() => {
+                              copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                          }, 2000);
+                      }).catch(err => {
+                          console.error('Failed to copy code:', err);
+                          copyButton.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: var(--color-danger);"></i>';
+                          setTimeout(() => {
+                              copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                          }, 3000);
+                      });
+                  });
+
+                  const codeContainer = document.createElement('div'); // Create container for code and copy button
+                  codeContainer.className = 'code-container';
+                  pre.parentNode.insertBefore(codeContainer, pre); // Insert container before pre
+                  codeContainer.appendChild(pre); // Move pre into container
+                  codeContainer.appendChild(copyButton); // Add copy button to container
+              });
+            }
+            setupCodeCopy(); // Initialize copy functionality on page load
+        });
+    </script>
+
 </head>
 <body>
-  
-  <h1>SpinOnSubmitJS</h1>
+    <header class="header">
+        <h1 class="header__title">SpinOnSubmitJS</h1>
+        <p class="header__subtitle">Enhance your submit buttons with loading spinners and visual feedback.</p>
+    </header>
 
-  <h2>About the Library</h2>
-  <p>
-    SpinOnSubmitJS is a lightweight JavaScript library that simplifies the process of indicating loading state and disabling a submit button during asynchronous actions, such as form submissions. It provides an easy way to add a spinner to the submit button, improving user experience and preventing multiple form submissions. This library is perfect for web developers looking to improve the interactivity of their web pages without writing complex JavaScript code.
-  </p>
+    <main class="main-content">
+        <section id="about" class="section">
+            <h2 class="section__title">About the Library</h2>
+            <p class="section__description">
+                SpinOnSubmitJS is a lightweight JavaScript library designed to enhance user experience during form submissions and other asynchronous actions triggered by button clicks. It provides a simple yet effective way to visually indicate a loading state by adding a spinner to the button and disabling it to prevent multiple submissions.
+            </p>
+            <p class="section__description">
+                This library is perfect for developers who want to improve the interactivity and user feedback of their web applications with minimal code and easy integration.
+            </p>
+        </section>
 
-  <h2>Installation</h2>
-  <p>
-    SpinOnSubmitJS can be installed via NPM. To add it to your project, simply open your terminal and run the following command:
-  </p>
-  <pre><code>npm install spinonsubmitjs</code></pre>
+        <section id="installation" class="section">
+            <h2 class="section__title">Installation</h2>
+            <p class="section__description">
+                SpinOnSubmitJS is available as an NPM package. To install it, run:
+            </p>
+            <div class="code-container"> <pre class="code-block"><code >npm install spinonsubmitjs</code></pre></div>
+        </section>
 
-  <h2>Usage</h2>
-  <p>
-    Incorporating SpinOnSubmitJS into your project is easy. Just follow the subsequent steps:
-  </p>
-  
-  <ol>
-    <li>Create a submit button element within your HTML form and assign a unique ID to it.</li>
-    <li>In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS module.</li>
-    <li>Invoke `createSpinnerButton`, providing the ID of your submit button, the ID of your form, and a callback function representing the asynchronous action to be performed upon button click. The callback function now receives the form data as its first parameter, obviating the need for manual data collection.</li>
-    <li>You have the option to pass an error callback as the fourth argument. This function gets called if your main callback throws an error or rejects a promise, enabling you to handle errors seamlessly.</li>
-    <li>The fifth argument has now been replaced with an optional `spinnerOptions` object. This object can contain:
-      <ul>
-        <li><b>spinnerColor:</b> Sets the color of the spinner.</li>
-        <li><b>position:</b> Determines the spinner's position, either 'left' or 'right'.</li>
-        <li><b>hideLabelWhileLoading:</b> A boolean indicating whether or not to hide the button's label while loading.</li>
-      </ul>
-      Note that if you want the spinner with default configurations, you don't need to provide the `spinnerOptions` argument.
-    </li>
-  </ol>  
+        <section id="usage" class="section">
+            <h2 class="section__title">Usage</h2>
+            <p class="section__description">
+                Integrate SpinOnSubmitJS into your project by following these steps:
+            </p>
+            <ol class="section__list">
+                <li class="section__list-item">Include SpinOnSubmitJS in your project. If you installed via NPM, import it in your JavaScript file:
+                    <div class="code-container"> <pre class="code-block"><code >import { createSpinnerButton } from 'spinonsubmitjs';</code></pre></div>
+                </li>
+                <li class="section__list-item">Identify the button and form elements in your HTML by their IDs.</li>
+                <li class="section__list-item">Call the <code>createSpinnerButton</code> function in your JavaScript code, typically after the DOM is loaded. Pass the button ID, form ID, an <code>onSubmit</code> function (that returns a Promise), and optionally an <code>onError</code> function, and a <code>spinnerOptions</code> object.</li>
+            </ol>
+            <p class="section__description">
+                The <code>createSpinnerButton</code> function accepts the following parameters:
+            </p>
+            <div class="code-container"> <pre class="code-block language-javascript"><code >
+<code >
+createSpinnerButton(
+    buttonId: string,
+    formId: string,
+    onSubmit: function,
+    onError?: function,
+    spinnerOptions: object
+)
+</code></pre></div>
+        </section>
 
-  <p>Here's an example of how you might use `createSpinnerButton`:</p>
+        <section id="spinner-options" class="section">
+            <h2 class="section__title">Spinner Options</h2>
+            <p class="section__description">
+                Customize the button's spinner and behavior using the <code>spinnerOptions</code> object:
+            </p>
+            <ul class="section__list css-variables-list">
+                <li class="section__list-item">
+                    <code>spinnerColor</code>: Sets the color of the spinner.
+                </li>
+                <li class="section__list-item">
+                    <code>position</code>: Spinner position: <code>'left'</code> or <code>'right'</code>.
+                </li>
+                <li class="section__list-item">
+                    <code>hideLabelWhileLoading</code>: Hide label during loading? (boolean)
+                </li>
+                <li class="section__list-item">
+                    <code>showLabel</code>: Show label initially? (boolean)
+                </li>
+                <li class="section__list-item">
+                    <code>loadingText</code>: Text to show during loading.
+                </li>
+                <li class="section__list-item">
+                    <code>loadingHtml</code>: HTML to show during loading.
+                </li>
+                <li class="section__list-item">
+                    <code>onLoadingStart</code>: Callback on loading start.
+                </li>
+                <li class="section__list-item">
+                    <code>onLoadingFinished</code>: Callback on loading finish.
+                </li>
+                <li class="section__list-item">
+                    <code>showSuccessState</code>: Show success state? (boolean)
+                </li>
+                <li class="section__list-item">
+                    <code>showErrorState</code>: Show error state? (boolean)
+                </li>
+                <li class="section__list-item">
+                    <code>successAnimation</code>: Animation for success: <code>'checkmark'</code>, <code>'pulse'</code>, or <code>'none'</code>.
+                </li>
+                 <li class="section__list-item">
+                    <code>errorAnimation</code>: Animation for error: <code>'shake'</code>, <code>'fade'</code> or <code>'none'</code>.
+                </li>
+                 <li class="section__list-item">
+                    <code>resetForm</code>: Function to reset form.
+                </li>
+            </ul>
+        </section>
 
-<pre>
-<code>
-  createSpinnerButton(
-    'submitBtn',
-    'myForm',
-    function(data) {
-      return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-          var firstName = data.firstName;
-          var lastName = data.lastName;
-          if (firstName === '' || lastName === '') {
-            reject('All fields must be filled!');
-          } else {
-            alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-            resolve();
-          }
-        }, 2000);
-      });
-    },
-    function(error) {
-      alert(error);
-      console.error(error);
-    },
-    'white', // Spinner color
-    'right',  // Spinner position
-    false     // hideLabelWhileLoading
-  );
-</code>
-</pre>
+        <section id="examples" class="section examples-section">
+            <h2 class="section__title">Examples</h2>
 
+            <div class="example-container">
+                <h3 class="example-container__title">Example 1: Default with Enhanced Success/Error</h3>
+                <form id="exampleForm" class="example-container__form">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                    <button id="defaultSubmitBtn" class="example-container__button">Submit</button>
+                </form>
+                <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+    'defaultSubmitBtn',
+    'exampleForm',
+    (data) => simulateAction(data.firstName !== '' && data.lastName !== ''),
+    handleError,
+    {
+        successAnimation: 'checkmark',
+        errorAnimation: 'shake',
+        resetForm: resetExampleForm
+    }
+);
+                </code></pre>
+            </div>
 
-  <h2>Example</h2>
-  <p>
-    Below is a live example of a form using SpinOnSubmitJS. When you click the submit button, the form data is gathered and an alert is displayed with your first and last name. During this time, the submit button is disabled and a spinner is displayed.
-  </p>
+             <div class="example-container example-container--discouraged">
+                <h3 class="example-container__title">Example 2: Spinner-Only (Less Common)</h3>
+                 <form id="exampleForm2" class="example-container__form">
+                    <button id="spinnerOnlyBtn" aria-label="Submit" class="example-container__button"></button>
+                </form>
+                <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+    'spinnerOnlyBtn',
+    'exampleForm',
+    () => simulateAction(true),
+    handleError,
+    {
+        showLabel: false,
+        successAnimation: 'none',
+        errorAnimation: 'none',
+        resetForm: resetExampleForm
+    }
+);
+                </code></pre>
+            </div>
 
+            <div class="example-container">
+              <h3 class="example-container__title">Example 3: Label Always Shown</h3>
+              <form id="exampleForm3" class="example-container__form">
+                  <button id="labelAlwaysShownBtn" class="example-container__button">Submit with Label</button>
+              </form>
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'labelAlwaysShownBtn',
+  'exampleForm',
+  () => simulateAction(true),
+  handleError,
+  {
+      position: 'right',
+      hideLabelWhileLoading: false,
+      successAnimation: 'pulse',
+      errorAnimation: 'fade',
+      resetForm: resetExampleForm
+  }
+);
+              </code></pre>
+          </div>
 
-  <form id="myForm">
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName" required><br><br>
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" required><br><br>
-    <button id="submitBtn">Submit</button>
-  </form>
+          <div class="example-container">
+              <h3 class="example-container__title">Example 4: Loading Text</h3>
+              <form id="exampleForm4" class="example-container__form">
+                  <button id="loadingTextBtn" class="example-container__button">Submit</button>
+              </form>
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'loadingTextBtn',
+  'exampleForm',
+  () => simulateAction(true),
+  handleError,
+  {
+      loadingText: 'Processing...',
+      successAnimation: 'checkmark',
+      errorAnimation: 'shake',
+      resetForm: resetExampleForm
+  }
+);
+              </code></pre>
+          </div>
 
-  <h2>GitHub Repository</h2>
-  <p>
-    The source code for SpinOnSubmitJS is available on GitHub. You can view it, download it, fork it, or contribute to it by visiting the following link: 
-    <a href="https://github.com/thedhanawada/SpinOnSubmitJS" target="_blank">SpinOnSubmitJS GitHub Repository</a>.
-  </p>
+          <div class="example-container">
+              <h3 class="example-container__title">Example 5: Loading HTML</h3>
+              <form id="exampleForm5" class="example-container__form">
+                  <button id="loadingHtmlBtn" class="example-container__button">Submit</button>
+               </form>
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'loadingHtmlBtn',
+  'exampleForm',
+  () => simulateAction(true),
+  handleError,
+  {
+      loadingHtml: '<i class="fas fa-cog fa-spin"></i> Loading...',
+      successAnimation: 'checkmark',
+      errorAnimation: 'shake',
+      resetForm: resetExampleForm
+  }
+);
+              </code></pre>
+          </div>
 
-  <h2>NPM Package</h2>
-  <p>
-    SpinOnSubmitJS is also available as an NPM package. You can add it to your project by running `npm install spinonsubmitjs` or visit the NPM package page at 
-    <a href="https://www.npmjs.com/package/spinonsubmitjs" target="_blank">SpinOnSubmitJS NPM Package</a> for more information.
-  </p>
-  
+          <div class="example-container">
+              <h3 class="example-container__title">Example 6: Success State (Explicit)</h3>
+              <form id="exampleForm6" class="example-container__form">
+                   <button id="successStateBtn" class="example-container__button">Submit</button>
+              </form>
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'successStateBtn',
+  'exampleForm',
+  () => simulateAction(true),
+  handleError,
+  {
+      showSuccessState: true,
+      successAnimation: 'checkmark',
+      resetForm: resetExampleForm
+  }
+);
+              </code></pre>
+          </div>
+
+          <div class="example-container">
+              <h3 class="example-container__title">Example 7: Error State (Explicit)</h3>
+              <form id="exampleForm7" class="example-container__form">
+                  <button id="errorStateBtn" class="example-container__button">Submit</button>
+              </form>
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'errorStateBtn',
+  'exampleForm',
+  () => simulateAction(false),
+  handleError,
+  {
+      showErrorState: true,
+      errorAnimation: 'shake',
+      resetForm: resetExampleForm
+  }
+);
+              </code></pre>
+          </div>
+
+          <div class="example-container">
+              <h3 class="example-container__title">Example 8: Callbacks</h3>
+              <form id="exampleForm8" class="example-container__form">
+                 <button id="callbackBtn" class="example-container__button">Submit</button>
+              </form>
+
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'callbackBtn',
+  'exampleForm',
+  () => simulateAction(true),
+  handleError,
+  {
+      onLoadingStart: () => console.log('Loading started!'),
+      onLoadingFinished: (event) => console.log('Loading finished! Error:', event.detail.error),
+      resetForm: resetExampleForm
+  }
+);
+              </code></pre>
+          </div>
+
+          <div class="example-container">
+              <h3 class="example-container__title">Example 9: Contact Form</h3>
+              <form id="contactForm" class="example-container__form">
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" name="email" required>
+                  <label for="message">Message:</label>
+                  <textarea id="message" name="message" required></textarea>
+                  <button id="contactSubmitBtn" class="example-container__button">Send Message</button>
+              </form>
+              <pre class="code-block language-javascript"><code>
+createSpinnerButton(
+  'contactSubmitBtn',
+  'contactForm',
+  (data) => simulateAction(data.email !== '' && data.message !== ''),
+  handleError,
+  {
+      successAnimation: 'pulse',
+      errorAnimation: 'fade',
+      resetForm: resetContactForm
+  }
+);
+              </code></pre>
+          </div>
+
+      </section>
+
+      <section id="css-customization" class="section">
+          <h2 class="section__title">CSS Customization</h2>
+         <p class="section__description">
+              SpinOnSubmitJS is styled using CSS variables, allowing for easy and flexible customization to match your project's design. Redefine these variables in your CSS to alter the appearance of the spinner and icons globally or specifically.
+          </p>
+          <p class="section__description">
+              The following CSS variables are available:
+          </p>
+          <ul class="section__list css-variables-list">
+              <li class="section__list-item">
+                  <code>--sos-spinner-size</code>: Size (width and height) of the spinner. Default: <code>20px</code>.
+              </li>
+              <li class="section__list-item">
+                  <code>--sos-spinner-border-color-light</code>: Color of the spinner's main border. Default: <code>#f0f0f0</code> (light grey).
+              </li>
+              <li class="section__list-item">
+                  <code>--sos-spinner-border-top-color</code>: Color of the spinner's top border (spinning part). Default: <code>var(--color-accent)</code> (yellow).
+              </li>
+              <li class="section__list-item">
+                  <code>--sos-spinner-margin-right</code>: Right margin of the spinner when next to a label. Default: <code>0.5rem</code>.
+              </li>
+               <li class="section__list-item">
+                  <code>--sos-icon-size</code>: Size (width and height) of the success and error icons. Default: <code>20px</code>.
+              </li>
+              <li class="section__list-item">
+                  <code>--sos-icon-stroke</code>: Stroke width of the success and error icons' checkmark and X shapes. Default: <code>2px</code>.
+              </li>
+          </ul>
+          <pre class="code-block language-css"><code>
+:root {
+  /* Your custom variable overrides here */
+  --sos-spinner-border-top-color: #e74c3c; /* Red spinner */
+}
+          </code></pre>
+      </section>
+
+      <section id="npm-package" class="section">
+          <h2 class="section__title">NPM Package</h2>
+          <p class="section__description">
+              SpinOnSubmitJS is available on NPM:
+          </p>
+          <pre class="code-block"><code>npm install spinonsubmitjs</code></pre>
+      </section>
+
+      <section id="github-repo" class="section">
+          <h2 class="section__title">GitHub Repository</h2>
+          <p>
+              <a href="https://github.com/thedhanawada/SpinOnSubmitJS" target="_blank">SpinOnSubmitJS on GitHub</a>
+          </p>
+      </section>
+  </main>
 </body>
 </html>
