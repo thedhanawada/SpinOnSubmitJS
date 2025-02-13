@@ -1,6 +1,7 @@
+/* Base spinner styles */
 .loader {
-  border: 4px solid var(--sos-spinner-border-color-light, #f3f3f3); /* Light grey, less prominent default */
-  border-top-color: var(--sos-spinner-border-top-color, white); /* White spinner for better contrast on blue buttons */
+  border: 4px solid var(--sos-spinner-border-color-light, #f3f3f3);
+  border-top-color: var(--sos-spinner-border-top-color, #3498db);
   border-radius: 50%;
   width: var(--sos-spinner-size, 20px);
   height: var(--sos-spinner-size, 20px);
@@ -15,23 +16,40 @@
   100% { transform: rotate(360deg); }
 }
 
-.button-label {
-  font-size: 1em; /* Base font size for labels */
+/* Button styles */
+button {
+  min-width: 80px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-/* Success and Error Icons */
+.button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-label {
+  font-size: 1em;
+}
+
+/* Success and Error icons */
 .sos-success-icon, .sos-error-icon {
   display: inline-block;
   width: var(--sos-icon-size, 20px);
   height: var(--sos-icon-size, 20px);
-  margin-right: var(--sos-spinner-margin-right, 5px); /* Consistent margin with spinner */
-  vertical-align: middle; /* Align with label/spinner */
+  margin-right: var(--sos-spinner-margin-right, 5px);
+  vertical-align: middle;
   box-sizing: border-box;
-  border-radius: 50%; /* Make them circular */
-  position: relative; /* For icon shapes */
+  border-radius: 50%;
+  position: relative;
 }
 
-.sos-success-icon::after {
+/* Checkmark styles */
+.sos-success-icon.checkmark::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -39,11 +57,12 @@
   transform: translate(-50%, -50%) rotate(45deg);
   width: calc(var(--sos-icon-size, 20px) / 3);
   height: calc(var(--sos-icon-size, 20px) / 1.5);
-  border-bottom: calc(var(--sos-icon-stroke, 3px)) solid var(--color-success); /* Success color from vars */
-  border-right: calc(var(--sos-icon-stroke, 3px)) solid var(--color-success);
-  opacity: 0.9; /* Slightly reduce opacity for a softer look */
+  border-bottom: calc(var(--sos-icon-stroke, 3px)) solid var(--color-success, green);
+  border-right: calc(var(--sos-icon-stroke, 3px)) solid var(--color-success, green);
+  opacity: 0.9;
 }
 
+/* Error X styles */
 .sos-error-icon::after {
   content: '';
   position: absolute;
@@ -52,7 +71,49 @@
   transform: translate(-50%, -50%) rotate(45deg);
   width: calc(var(--sos-icon-size, 20px) / 1.5);
   height: calc(var(--sos-icon-size, 20px) / 1.5);
-  border-top: calc(var(--sos-icon-stroke, 3px)) solid var(--color-danger); /* Error color from vars */
-  border-right: calc(var(--sos-icon-stroke, 3px)) solid var(--color-danger);
-   opacity: 0.9; /* Slightly reduce opacity for a softer look */
+  border-top: calc(var(--sos-icon-stroke, 3px)) solid var(--color-danger, red);
+  border-right: calc(var(--sos-icon-stroke, 3px)) solid var(--color-danger, red);
+  opacity: 0.9;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes fade-out {
+  0% { opacity: 1 }
+  100% { opacity: 0; }
+}
+
+.fade-out {
+  animation: fade-out 0.4s ease-in-out;
+}
+
+/* CSS Variables */
+:root {
+  --sos-spinner-size: 20px;
+  --sos-spinner-border-color-light: #f3f3f3;
+  --sos-spinner-border-top-color: #3498db;
+  --sos-spinner-margin-right: 5px;
+  --sos-icon-size: 20px;
+  --sos-icon-stroke: 3px;
+  --color-success: green;
+  --color-danger: red;
 }
