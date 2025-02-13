@@ -1,75 +1,169 @@
+# SpinOnSubmitJS
+
 [![npm version](https://img.shields.io/npm/v/spinonsubmitjs)](https://img.shields.io/npm/v/spinonsubmitjs)
 [![npm](https://img.shields.io/npm/l/spinonsubmitjs?style=flat-square)](https://img.shields.io/npm/l/spinonsubmitjs?style=flat-square)
 [![npm version](https://img.shields.io/bundlephobia/min/spinonsubmitjs)](https://img.shields.io/bundlephobia/min/spinonsubmitjs)
 [![npm downloads](https://img.shields.io/npm/dm/spinonsubmitjs)](https://img.shields.io/npm/dm/spinonsubmitjs)
 
-# SpinOnSubmitJS
+SpinOnSubmitJS is a lightweight JavaScript library that enhances form submission buttons with loading indicators, success/error states, and animations. It provides an intuitive way to handle asynchronous actions while providing visual feedback to users.
 
-SpinOnSubmitJS is a lightweight JavaScript library that provides an easy way to add a spinner to a submit button when performing asynchronous actions, such as form submissions. It simplifies the process of indicating loading state and disabling the button while waiting for the action to complete.
-Installation
+## Installation
 
-You can install SpinOnSubmitJS via npm:
+Install via npm:
 
 ```shell
 npm install spinonsubmitjs
 ```
 
-## Usage and Examples
+## Features
 
-Using **SpinOnSubmitJS** in your project is easy. Follow these steps:
+SpinOnSubmitJS includes:
 
-1. Create a submit button element in your HTML form with a unique ID.
-2. In your JavaScript file, import the `createSpinnerButton` function from the SpinOnSubmitJS library.
-3. Call `createSpinnerButton`, passing in the following arguments:
-   - The ID of your submit button
-   - The ID of your form
-   - A callback function representing the asynchronous action to be performed when the button is clicked. This callback receives the form data as its first argument, removing the need to manually gather the data.
-   - An error callback function. This function will be called if your main callback throws an error or rejects a promise, allowing you to handle errors gracefully.
-   - An options object that can contain the following properties:
-     - `spinnerColor`: This sets the color of the default spinner.
-     - `position`: This can be either 'left' or 'right', and sets the position of the spinner in relation to the button text.
-     - `hideLabelWhileLoading`: This can be either true or false, and determines whether or not the button's text is hidden while the spinner is displayed.
-4. Remember, the options object is an optional parameter. If you want the spinner with default configurations, you don't need to pass this argument.
+* Loading spinner with customizable appearance
+* Success and error states with icons
+* Multiple animation options (checkmark, pulse, shake, fade)
+* Custom loading text/HTML support
+* Automatic form reset capability
+* Flexible positioning and styling
+* CSS variables for easy theming
+* ARIA attributes for accessibility
 
-Here's an example of how you might use `createSpinnerButton`:
+## Usage
+
+### 1. Import the library:
+
+```javascript
+import { createSpinnerButton } from 'spinonsubmitjs';
+```
+
+### 2. Create a button and form in your HTML:
+
+```html
+<form id="myForm">
+   <input type="text" name="firstName" />
+   <input type="text" name="lastName" />
+   <button id="submitBtn">Submit</button>
+</form>
+```
+
+### 3. Initialize the button:
 
 ```javascript
 createSpinnerButton(
-        'submitBtn',
-        'myForm',
-        function(data) {
-          return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              var firstName = data.firstName;
-              var lastName = data.lastName;
-              if (firstName === '' || lastName === '') {
-                reject('All fields must be filled!');
-              } else {
-                alert("Submitted!\nFirst Name: " + firstName + "\nLast Name: " + lastName);
-                resolve();
-              }
-            }, 2000);
-          });
-        },
-        function(error) {
-          alert(error);
-          console.error(error);
-        },
-        'white', // Spinner color
-        'right',  // Spinner position
-        true     // hideLabelWhileLoading
-      );
+   'submitBtn',
+   'myForm',
+   async (data) => {
+       // Your submission logic here
+       await submitData(data);
+   },
+   (error) => {
+       console.error('Submission failed:', error);
+   },
+   {
+       spinnerColor: '#3498db',
+       position: 'right',
+       hideLabelWhileLoading: true,
+       showSuccessState: true,
+       successAnimation: 'checkmark',
+       showErrorState: true,
+       errorAnimation: 'shake',
+       loadingText: 'Submitting...',
+       resetForm: true,
+       onLoadingStart: () => console.log('Loading started'),
+       onLoadingFinished: () => console.log('Loading finished')
+   }
+);
 ```
-This creates a button that, when clicked, gathers data from a form, displays a yellow spinner to the right of the button text, and pops up an alert with the form data. If any fields are empty, the function will reject with an error, and the error callback will alert the user. If the 'hideLabelWhileLoading' option is set to true, the button's label will be hidden while the spinner is displayed.
 
-If you have any other questions or if there's anything else you'd like to change, feel free to ask!
+## Configuration Options
+
+The `spinnerOptions` object accepts the following properties:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| spinnerColor | string | '' | Color of the spinner |
+| position | string | 'left' | Position of spinner ('left' or 'right') |
+| hideLabelWhileLoading | boolean | true | Hide button text during loading |
+| showLabel | boolean | true | Show button label |
+| loadingText | string | undefined | Text to show during loading |
+| loadingHtml | string | undefined | HTML to show during loading |
+| showSuccessState | boolean | false | Show success icon after completion |
+| showErrorState | boolean | false | Show error icon on failure |
+| successAnimation | string | 'checkmark' | Success animation type ('checkmark' or 'pulse') |
+| errorAnimation | string | 'shake' | Error animation type ('shake' or 'fade') |
+| resetForm | boolean | false | Reset form after error |
+| onLoadingStart | function | undefined | Callback when loading starts |
+| onLoadingFinished | function | undefined | Callback when loading ends |
+
+## Styling
+
+The library includes CSS variables for easy customization:
+
+```css
+:root {
+   --sos-spinner-size: 20px;
+   --sos-spinner-border-color-light: #f3f3f3;
+   --sos-spinner-border-top-color: #3498db;
+   --sos-spinner-margin-right: 5px;
+   --sos-icon-size: 20px;
+   --sos-icon-stroke: 3px;
+   --color-success: green;
+   --color-danger: red;
+}
+```
+
+## Events
+
+The button emits a 'loadingFinished' event when the submission process completes:
+
+```javascript
+button.addEventListener('loadingFinished', (event) => {
+   const hasError = event.detail.error;
+   console.log('Loading finished with error:', hasError);
+});
+```
+
+## Examples
+
+Here's a complete example showing various features:
+
+```javascript
+createSpinnerButton(
+   'submitBtn',
+   'myForm',
+   (data) => {
+       return new Promise((resolve, reject) => {
+           setTimeout(() => {
+               if (data.firstName && data.lastName) {
+                   resolve();
+               } else {
+                   reject('All fields must be filled!');
+               }
+           }, 2000);
+       });
+   },
+   (error) => {
+       console.error('Error:', error);
+   },
+   {
+       spinnerColor: '#3498db',
+       position: 'right',
+       hideLabelWhileLoading: true,
+       showSuccessState: true,
+       successAnimation: 'checkmark',
+       loadingText: 'Processing...',
+       onLoadingFinished: () => {
+           console.log('Form submission completed');
+       }
+   }
+);
+```
 
 ## License
 
-SpinOnSubmitJS is released under the [MIT license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE). This is a permissive open-source software license, which allows for free use, modification, and distribution of the software without requiring payment or attribution.
+SpinOnSubmitJS is released under the [MIT license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE). You are free to use, modify, and distribute this software for any purpose, commercial or non-commercial, with proper attribution.
 
-The [MIT license](https://opensource.org/licenses/MIT) is a widely-used open-source software license that gives permission for free use, modification, and distribution of the software, without any obligation of payment or attribution. This signifies that anyone has the liberty to use, modify, and distribute the software without needing to make any payment or credit the original author.
+---
 
-The adoption of an open-source license like the MIT license is significant because it ensures that the software can be utilized and enhanced by as many individuals as possible. By releasing SpinOnSubmitJS under the MIT license, it's aimed to inspire others to use and contribute to the project, and to foster the broader adoption of open-source software in general.
-
-The licensing of SpinOnSubmitJS is considered with great importance, believing it as a fundamental part of the project's success. You are encouraged to read the [license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE) thoroughly before using or contributing to the project, and to comply with its terms in your use and distribution of the software.
+For more information, visit our [GitHub repository](https://github.com/thedhanawada/SpinOnSubmitJS).
+```
