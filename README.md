@@ -162,7 +162,3 @@ createSpinnerButton(
 ## License
 
 SpinOnSubmitJS is released under the [MIT license](https://github.com/thedhanawada/SpinOnSubmitJS/blob/main/LICENSE). You are free to use, modify, and distribute this software for any purpose, commercial or non-commercial, with proper attribution.
-
----
-
-For more information, visit our [GitHub repository](https://github.com/thedhanawada/SpinOnSubmitJS).
