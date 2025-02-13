@@ -166,4 +166,3 @@ SpinOnSubmitJS is released under the [MIT license](https://github.com/thedhanawa
 ---
 
 For more information, visit our [GitHub repository](https://github.com/thedhanawada/SpinOnSubmitJS).
-```
